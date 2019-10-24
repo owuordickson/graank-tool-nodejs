@@ -2,8 +2,9 @@
   "name": "graank-tool",
   "version": "1.0.0",
   "description": "a gradual pattern mining tool for numeric data sets (in csv format)",
-  "main": "index.js",
+  "private": true,
   "scripts": {
+    "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +22,11 @@
   },
   "homepage": "https://github.com/owuordickson/graank-tool-node#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11"
   }
 }
