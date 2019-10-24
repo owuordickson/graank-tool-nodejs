@@ -4,8 +4,7 @@
   "description": "a gradual pattern mining tool for numeric data sets (in csv format)",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
   "repository": {
     "type": "git",
