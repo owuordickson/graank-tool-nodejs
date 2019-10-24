@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/owuordickson/graank-tool-nodejs.git"
+    "url": "git+https://github.com/owuordickson/graank-tool-node.git"
   },
   "keywords": [
     "gradual",
@@ -17,9 +17,9 @@
   "author": "Dickson Owuor",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/owuordickson/graank-tool-nodejs/issues"
+    "url": "https://github.com/owuordickson/graank-tool-node/issues"
   },
-  "homepage": "https://github.com/owuordickson/graank-tool-nodejs#readme",
+  "homepage": "https://github.com/owuordickson/graank-tool-node#readme",
   "dependencies": {
     "express": "^4.17.1"
   }
