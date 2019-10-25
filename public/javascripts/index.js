@@ -1,6 +1,6 @@
 const path = require('path')
-const {ipcRenderer} = require('electron')
-const tooltip = require('electron-tooltip')
+//const {ipcRenderer} = require('electron')
+//const tooltip = require('electron-tooltip')
 const mime = require('mime')
 const csvJson = require('csvtojson')
 
@@ -16,8 +16,28 @@ let gradualEP = false
 let file1 = ''
 let file2 = ''
 
-tooltip({
+/*tooltip({
     //
+})*/
+// ----------------------- Show main content -----------------------------
+
+function showMainContent(){
+  document.querySelector('.grid-content-right').classList.add('is-shown')
+  resultView = document.querySelector('.grid-content-left.is-shown')
+  if (resultView) resultView.classList.remove('is-shown')
+}
+
+showMainContent()
+
+// ----------------------- import result.html ----------------------------
+
+const links = document.querySelectorAll('link[rel="import"]')
+
+// Import and add each page to the DOM
+Array.prototype.forEach.call(links, (link) => {
+  let template = link.import.querySelector('.task-template')
+  let clone = document.importNode(template.content, true)
+  document.querySelector('.content').appendChild(clone)
 })
 
 // ------------------------ Listeners ------------------------------------
@@ -35,9 +55,9 @@ selectPattern.addEventListener('click', (event) => {
   }
 })
 
-selectDirBtn.addEventListener('click', (event) => {
+/*selectDirBtn.addEventListener('click', (event) => {
   ipcRenderer.send('open-file-dialog')
-})
+})*/
 
 uploadFile.addEventListener('click', (event) => {
   csvFile = selectDirBtn.value
@@ -130,7 +150,7 @@ runPattern1.addEventListener('click', (event) => {
   }
 })
 
-ipcRenderer.on('selected-directory', (event, path) => {
+/*ipcRenderer.on('selected-directory', (event, path) => {
   selectDirBtn.value = `${path}`
   if (!gradualEP){
     msgLabel.innerHTML = ''
@@ -138,7 +158,7 @@ ipcRenderer.on('selected-directory', (event, path) => {
     closeProgress()
     closeSpecifications()
   }
-})
+})*/
 
 // --------------------- Views ----------------------------------
 
