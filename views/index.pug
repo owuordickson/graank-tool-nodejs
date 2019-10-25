@@ -14,15 +14,15 @@ block layout-content
           .graank-meta.u-avoid-clicks File Format: CSV
         .input-group.mb-3
           .input-group-prepend
-            button(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false").btn.btn-outline-secondary.dropdown-toggle Gradual Patterns
+            button(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pattern-type").btn.btn-outline-secondary.dropdown-toggle Gradual Patterns
             .dropdown-menu
               a(data-value='Gradual').dropdown-item Gradual
               a(data-value='Emerging').dropdown-item Emerging
-          input(type="text" placeholder="click here to select file . . . ").form-control
+          input(type="text" placeholder="click here to select file . . . " id="select-directory").form-control
           .input-group-append
-            button.btn.btn-secondary Upload
+            button(id="upload-file").btn.btn-secondary Upload
           
-        .graank-progress.is-shown
+        .graank-progress
           .spinner-wave
             div
             div
@@ -31,18 +31,18 @@ block layout-content
             div
           
         .graank-response
-          span.graank-response-text.u-category-maroon
+          span(id="show-message").graank-response-text.u-category-maroon
         
         .graank-specs.u-category-subtle
           .grid-specs-gradual-group
             .grid-title-sup
               span(data-tooltip="range: 0.0 to 1.0" data-tooltip-position="top").graank-span-title Support
             .grid-input-sup
-              input(type="number" min="0.4" step="0.1" value="0.5").graank-input-specs
+              input(type="number" min="0.4" max="1.0" step="0.1" value="0.5" id="input-sup1").graank-input-specs
             .grid-button-exec-sup
-              button.btn.btn-outline-secondary.graank-btn-exec Get Patterns
+              button(id="run-algorithm1").btn.btn-outline-secondary.graank-btn-exec Get Patterns
 
-          .grid-specs-temporal-group.is-shown
+          .grid-specs-temporal-group
             .grid-title-sup
               span(data-tooltip="range: 0.0 to 1.0" data-tooltip-position="top").graank-span-title Support
             .grid-title-rep
@@ -50,13 +50,13 @@ block layout-content
             .grid-title-ref
               span(data-tooltip="range: 1 to last-column" data-tooltip-position="top").graank-span-title Reference Column
             .grid-input-sup
-              input(type="number" min="0.4" step="0.1" value="0.5").graank-input-specs
+              input(type="number" min="0.4" step="0.1" value="0.5" id="input-sup").graank-input-specs
             .grid-input-rep
-              input(type="number" min="0.4" step="0.1" value="0.8").graank-input-specs
+              input(type="number" min="0.4" step="0.1" value="0.8" id="input-rep").graank-input-specs
             .grid-input-ref
-              input(type="number" min="1" step="1" value="1").graank-input-specs
+              input(type="number" min="1" step="1" value="1" id="input-ref").graank-input-specs
             .grid-button-exec
-              button.btn.btn-outline-secondary.graank-btn-exec Get Patterns
+              button(onclick='testClick()' id="run-algorithm").btn.btn-outline-secondary.graank-btn-exec Get Patterns
 
   .grid-content-left
     section.section
@@ -70,3 +70,4 @@ block layout-content
   .grid-footer
     div
       p.grid-footer-title 2019 © Sharemiale
+
