@@ -75,8 +75,8 @@
   padding: 1rem;
   border: 1px solid var(--color-border);
   color: var(--color-accent);
-  /*visibility: hidden;
-  opacity: 0;*/
+  visibility: hidden;
+  opacity: 0;
   animation: slide-out 0.8s forwards;
 }
 .grid-content-right.is-shown {

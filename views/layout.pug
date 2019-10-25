@@ -1,7 +1,24 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(charset="utf-8")
+    link(rel="shortcut icon", href="/favicon.ico")
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/global.css')
+    link(rel='stylesheet', href='/stylesheets/nativize.css')
+    link(rel='stylesheet', href='/stylesheets/grid.css')
+    link(rel='stylesheet', href='/stylesheets/variables.css')
+    link(rel='stylesheet', href='/stylesheets/github.css')
+    link(rel='stylesheet', href='/stylesheets/graank.css')
+    link(rel='stylesheet', href='/stylesheets/section.css')
+
+    script(src="/javascripts/jquery.min.js")
+    script(src="/javascripts/bootstrap.min.js")
+    script(src="/javascripts/popper.min.js")
+
+    title #{title} | sharemiale
   body
-    block content
+    div.grid-wrapper
+      block layout-content
