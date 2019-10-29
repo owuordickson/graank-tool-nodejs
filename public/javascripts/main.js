@@ -1,7 +1,7 @@
-//To be deleted
+//To be ignored because Browserify creates the bundle.js
 
 const path = require('path')
-//const {ipcRenderer} = require('electron')
+const fileDialog = require('file-dialog')
 //const tooltip = require('electron-tooltip')
 const mime = require('mime')
 const csvJson = require('csvtojson')
@@ -20,6 +20,8 @@ let gradualEP = false
 let file1 = ''
 let file2 = ''
 
+var data = ''//new FormData()
+
 /*tooltip({
     //
 })*/
@@ -36,9 +38,25 @@ showMainContent()
 
 //-------------------------- get file path -------------------------------------
 
- /*selectDirBtn.addEventListener('click', (event) => {
-  ipcRenderer.send('open-file-dialog')
-})*/
+selectDirBtn.addEventListener('click', (event) => {
+  //ipcRenderer.send('open-file-dialog')
+  fileDialog({ accept: '.csv' })
+    .then(file => {
+        data = file[0]//new FormData()
+        //data.append('file', file[0])
+        //data.append('imageName', 'flower')
+        console.log(file)
+        console.log(data)
+
+        selectDirBtn.value = data.name
+        if (!gradualEP){
+          msgLabel.innerHTML = ''
+          closeResultContent()
+          closeProgress()
+          closeSpecifications()
+        }
+    })
+})
 
 /*ipcRenderer.on('selected-directory', (event, path) => {
   selectDirBtn.value = `${path}`
@@ -70,7 +88,8 @@ selectPattern.addEventListener('click', (event) => {
   })
 
 uploadFile.addEventListener('click', (event) => {
-  csvFile = selectDirBtn.value
+  //csvFile = selectDirBtn.value
+  csvFile = data
   msgLabel.innerHTML = ''
   if (gradualEP){
     showProgress()
@@ -87,7 +106,7 @@ uploadFile.addEventListener('click', (event) => {
 })
 
 runPattern2.addEventListener('click', (event) => {
-  file = selectDirBtn.value
+  file = data//selectDirBtn.value
   ref_col = document.getElementById('input-ref2').value
   min_sup = document.getElementById('input-sup2').value
   min_rep = document.getElementById('input-rep2').value
@@ -108,7 +127,7 @@ runPattern2.addEventListener('click', (event) => {
 
 runPattern1.addEventListener('click', (event) => {
 
-  file = selectDirBtn.value
+  file = data//selectDirBtn.value
   min_sup = document.getElementById('input-sup1').value
 
   patternType = document.getElementById('pattern-type').innerHTML
