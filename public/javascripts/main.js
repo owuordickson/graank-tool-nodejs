@@ -3,9 +3,9 @@
 const path = require('path')
 const fileDialog = require('file-dialog')
 //const tooltip = require('electron-tooltip')
-const mime = require('mime')
+//const mime = require('mime')
 const csvJson = require('csvtojson')
-let spawn = require('child_process')
+//var spawn = require('child_process').spawn
 
 
 const selectPattern = document.querySelector('.dropdown-menu')
@@ -20,7 +20,7 @@ let gradualEP = false
 let file1 = ''
 let file2 = ''
 
-var data = ''//new FormData()
+var csv_data = ''//new FormData()
 
 /*tooltip({
     //
@@ -38,23 +38,27 @@ showMainContent()
 
 //-------------------------- get file path -------------------------------------
 
+
 selectDirBtn.addEventListener('click', (event) => {
   //ipcRenderer.send('open-file-dialog')
+
   fileDialog({ accept: '.csv' })
     .then(file => {
-        data = file[0]//new FormData()
-        //data.append('file', file[0])
-        //data.append('imageName', 'flower')
-        console.log(file)
-        console.log(data)
+      selectDirBtn.value = file[0].name
 
-        selectDirBtn.value = data.name
-        if (!gradualEP){
-          msgLabel.innerHTML = ''
-          closeResultContent()
-          closeProgress()
-          closeSpecifications()
+        var reader = new FileReader()
+        reader.onload = function(){
+          csv_data = reader.result
+          //console.log(csv_data)
+
+          if (!gradualEP){
+            msgLabel.innerHTML = ''
+            closeResultContent()
+            closeProgress()
+            closeSpecifications()
+          }
         }
+        reader.readAsBinaryString(file[0])
     })
 })
 
@@ -89,7 +93,7 @@ selectPattern.addEventListener('click', (event) => {
 
 uploadFile.addEventListener('click', (event) => {
   //csvFile = selectDirBtn.value
-  csvFile = data
+  csvFile = csv_data
   msgLabel.innerHTML = ''
   if (gradualEP){
     showProgress()
@@ -106,7 +110,7 @@ uploadFile.addEventListener('click', (event) => {
 })
 
 runPattern2.addEventListener('click', (event) => {
-  file = data//selectDirBtn.value
+  file = csv_data//selectDirBtn.value
   ref_col = document.getElementById('input-ref2').value
   min_sup = document.getElementById('input-sup2').value
   min_rep = document.getElementById('input-rep2').value
@@ -127,7 +131,7 @@ runPattern2.addEventListener('click', (event) => {
 
 runPattern1.addEventListener('click', (event) => {
 
-  file = data//selectDirBtn.value
+  file = csv_data//selectDirBtn.value
   min_sup = document.getElementById('input-sup1').value
 
   patternType = document.getElementById('pattern-type').innerHTML
@@ -292,7 +296,10 @@ function closeSpecifications(){
   }
 
 function checkFile(file){
-    ext = mime.getType(file)
+    msgLabel.innerHTML = '<p style="color: green;">csv file verified &#128077</p>'
+    closeProgress()
+    return true
+    /*ext = mime.getType(file)
     if (ext === 'text/csv' || ext === 'application/csv'){
       msgLabel.innerHTML = '<p style="color: green;">csv file verified &#128077</p>'
       closeProgress()
@@ -301,7 +308,7 @@ function checkFile(file){
       msgLabel.innerHTML = '<p>file is NOT csv! &#128577</p>'
       closeProgress()
       return false
-    }
+    }*/
   }
 
 // ----------------------- upload another file ---------------------------------
@@ -330,19 +337,18 @@ async function validateTimeColumn(csvFile){
       //throw new Error("")
       return false
     }catch (err){
-      console.error("Error: ", data.toString())
+      console.error("Error: ", err.toString())
       msgLabel.innerHTML = '<p>sorry, an error occured</p>'
       closeProgress()
     }
   }
 
 function getJson(csvPath){
-  return csvJson({delimiter: [";",",",' ',"\t"]}).fromFile(csvPath)
+  return csvJson({delimiter: [";",",",' ',"\t"]}).fromString(csvPath)
 }
 
 function runPythonCode(request){
-  spawn.spawn
-  let pythonProcess = spawn('python', request)
+  /*const pythonProcess = spawn('python', request)
   pythonProcess.stdout.on('data', (data) => {
       // Do something with the data returned from python script
       document.getElementById('text-result').innerHTML = `${data}`
@@ -356,5 +362,5 @@ function runPythonCode(request){
   })
   pythonProcess.on('close', (code) => {
     console.log("Child exited with code ", code)
-  })
+  })*/
 }
