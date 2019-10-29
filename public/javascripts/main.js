@@ -1,3 +1,5 @@
+//To be deleted
+
 const path = require('path')
 //const {ipcRenderer} = require('electron')
 //const tooltip = require('electron-tooltip')
