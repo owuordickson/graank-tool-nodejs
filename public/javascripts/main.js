@@ -1,9 +1,9 @@
-//const path = require('path')
+const path = require('path')
 //const {ipcRenderer} = require('electron')
 //const tooltip = require('electron-tooltip')
-//const mime = require('mime')
-//const csvJson = require('csvtojson')
-//let spawn = require('child_process')
+const mime = require('mime')
+const csvJson = require('csvtojson')
+let spawn = require('child_process')
 
 
 const selectPattern = document.querySelector('.dropdown-menu')
@@ -330,7 +330,7 @@ function runPythonCode(request){
   })
   pythonProcess.stderr.on('data', (data) => {
     console.error("Error: ", data.toString())
-    msgLabel.innerHTML = '<p>sorry, an error occured</p><br>'+data.toString()
+    msgLabel.innerHTML = '<p>sorry, an error occured</p><br><p>check console for more details</p>'
     closeProgress()
   })
   pythonProcess.on('close', (code) => {
