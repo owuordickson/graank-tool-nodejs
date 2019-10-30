@@ -19,7 +19,6 @@ const fileDialog = require('file-dialog')
 //const tooltip = require('electron-tooltip')
 //const mime = require('mime')
 const csvJson = require('csvtojson')
-//var spawn = require('child_process').spawn
 
 
 const selectPattern = document.querySelector('.dropdown-menu')
@@ -363,12 +362,21 @@ function getJson(csvPath){
 
 function runPythonCode(request){
   var payload = JSON.stringify({data: request})
-  console.log("payload")
+  console.log("sending Python request")
   var x = new XMLHttpRequest();
   x.onreadystatechange = function(){
     if( x.status === 200 && x.readyState === 4) {
       // Optional callback for when request completes
-      console.log(x.responseText);
+      var msg = x.responseText;
+      console.log(msg);
+
+      if (msg.success === 1){
+        document.getElementById('text-result').innerHTML = `${msg.pyload}`
+        showResultContent()
+      }else if (msg.success === 0){
+        msgLabel.innerHTML = '<p>sorry, an error occured</p><br><p>check console for more details</p>'
+      }
+      closeProgress()
     }
   }
   x.open('POST', '/runPython', true);
