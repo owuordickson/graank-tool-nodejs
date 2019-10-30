@@ -369,11 +369,12 @@ function runPythonCode(request){
       // Optional callback for when request completes
       var msg = x.responseText;
       console.log(msg);
+      console.log(msg.success)
 
-      if (msg.success === 1){
+      if (msg.success == 1){
         document.getElementById('text-result').innerHTML = `${msg.pyload}`
         showResultContent()
-      }else if (msg.success === 0){
+      }else if (msg.success == 0){
         msgLabel.innerHTML = '<p>sorry, an error occured</p><br><p>check console for more details</p>'
       }
       closeProgress()
