@@ -7,7 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('graank-tool:server');
 var http = require('http');
-var spawn = require('child_process').spawn
 
 /**
  * Get port from environment and store in Express.
@@ -89,27 +88,3 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
-
-app.get('/runPython', function(req, res){
-  //res.render('index', { title: 'graank' });
-  console.log("working")
-  //function runPythonCode(request){
-    const pythonProcess = spawn('python', req);
-    pythonProcess.stdout.on('data', (data) => {
-        // Do something with the data returned from python script
-        //document.getElementById('text-result').innerHTML = `${data}`
-        //showResultContent()
-        //closeProgress()
-        console.log("working")
-        res.send(data)
-    });
-    pythonProcess.stderr.on('data', (data) => {
-      console.error("Error: ", data.toString());
-      //msgLabel.innerHTML = '<p>sorry, an error occured</p><br><p>check console for more details</p>'
-      //closeProgress()
-    })
-    pythonProcess.on('close', (code) => {
-      console.log("Child exited with code ", code);
-    })
-  //}
-});

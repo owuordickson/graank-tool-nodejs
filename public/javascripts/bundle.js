@@ -362,6 +362,21 @@ function getJson(csvPath){
 }
 
 function runPythonCode(request){
+  var payload = JSON.stringify({data: request})
+  console.log("payload")
+  var x = new XMLHttpRequest();
+  x.onreadystatechange = function(){
+    if( x.status === 200 && x.readyState === 4) {
+      // Optional callback for when request completes
+      console.log(x.responseText);
+    }
+  }
+  x.open('POST', '/runPython', true);
+  x.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+  x.send(payload);
+
+  //const func = () => fetch(path.join(__dirname, '/runPython'));
+  //console.log(func)
   /*const pythonProcess = spawn('python', request)
   pythonProcess.stdout.on('data', (data) => {
       // Do something with the data returned from python script
