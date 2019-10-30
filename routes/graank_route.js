@@ -4,7 +4,7 @@ var spawn = require('child_process').spawn
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'graank' });
+  res.render('graank', { title: 'graank' });
 });
 
 router.post('/runPython', function(req, res){
