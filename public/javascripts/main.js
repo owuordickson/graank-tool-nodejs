@@ -5,7 +5,6 @@ const fileDialog = require('file-dialog')
 //const tooltip = require('electron-tooltip')
 //const mime = require('mime')
 const csvJson = require('csvtojson')
-//var spawn = require('child_process').spawn
 
 
 const selectPattern = document.querySelector('.dropdown-menu')
