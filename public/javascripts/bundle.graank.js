@@ -11,7 +11,6 @@ var n=r(38),i=r(39),o=r(40);function s(){return u.TYPED_ARRAY_SUPPORT?2147483647
 'use strict';var _typeof='function'==typeof Symbol&&'symbol'==typeof Symbol.iterator?function(a){return typeof a}:function(a){return a&&'function'==typeof Symbol&&a.constructor===Symbol&&a!==Symbol.prototype?'symbol':typeof a};(function(a){'use strict';var b=function(){for(var d=arguments.length,c=Array(d),f=0;f<d;f++)c[f]=arguments[f];var g=document.createElement('input');return'object'===_typeof(c[0])&&(!0===c[0].multiple&&g.setAttribute('multiple',''),void 0!==c[0].accept&&g.setAttribute('accept',c[0].accept)),g.setAttribute('type','file'),g.style.display='none',g.setAttribute('id','hidden-file'),document.body.appendChild(g),new Promise(function(h){g.addEventListener('change',function(){h(g.files);var l=c[c.length-1];'function'==typeof l&&l(g.files),document.body.removeChild(g)});var j=document.createEvent('MouseEvents');j.initMouseEvent('click',!0,!0,window,1,0,0,0,0,!1,!1,!1,!1,0,null),g.dispatchEvent(j)})};'function'==typeof define&&define.amd?define(function(){return b}):'undefined'==typeof exports?a.fileDialog=b:('undefined'!=typeof module&&module.exports&&(exports=module.exports=b),exports.fileDialog=b)})(void 0);
 
 },{}],3:[function(require,module,exports){
-(function (__dirname){
 //To be ignored because Browserify creates the bundle.js
 
 const path = require('path')
@@ -134,7 +133,8 @@ runPattern2.addEventListener('click', (event) => {
     type = 2
   }
   showProgress()
-  python_path = path.join(__dirname, '../python_modules/src/border_tgraank.py')
+  //python_path = path.join(__dirname, '../python_modules/src/border_tgraank.py')
+  python_path = '../public/python_modules/src/border_tgraank.py'
   python_file = 'border_tgraank.py'
   req = [python_path, type, file, (ref_col-1), min_sup, min_rep]
   //console.log(req)
@@ -159,7 +159,8 @@ runPattern1.addEventListener('click', (event) => {
             msg = 'columns in csv file not matching previous file...<br>upload another file'
             requestFile(msg)
           }else {
-            python_path = path.join(__dirname, '../python_modules/src/graank.py')
+            //python_path = path.join(__dirname, '../python_modules/src/graank.py')
+            python_path = '../public/python_modules/src/graank.py'
             python_file = 'graank.py'
             req = [python_path, type, file1, file2, min_sup]
             runPythonCode(req)
@@ -188,7 +189,8 @@ runPattern1.addEventListener('click', (event) => {
   }else{
     type = 1
     showProgress()
-    python_path = path.join(__dirname, '../python_modules/src/graank.py')
+    //python_path = path.join(__dirname, '../python_modules/src/graank.py')
+    python_path = '../public/python_modules/src/graank.py'
     python_file = 'graank.py'
     req = [python_path, type, file, min_sup]
     runPythonCode(req)
@@ -401,7 +403,6 @@ function runPythonCode(request){
     console.log("Child exited with code ", code)
   })*/
 }
-}).call(this,"/public/javascripts")
 },{"csvtojson":1,"file-dialog":2,"path":4}],4:[function(require,module,exports){
 (function (process){
 // .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,

@@ -1,6 +1,6 @@
 //To be ignored because Browserify creates the bundle.js
 
-const path = require('path')
+//const path = require('path')
 const fileDialog = require('file-dialog')
 //const tooltip = require('electron-tooltip')
 //const mime = require('mime')
@@ -120,7 +120,8 @@ runPattern2.addEventListener('click', (event) => {
     type = 2
   }
   showProgress()
-  python_path = path.join(__dirname, '../python_modules/src/border_tgraank.py')
+  //python_path = path.join(__dirname, '../python_modules/src/border_tgraank.py')
+  python_path = '../public/python_modules/src/border_tgraank.py'
   python_file = 'border_tgraank.py'
   req = [python_path, type, file, (ref_col-1), min_sup, min_rep]
   //console.log(req)
@@ -145,7 +146,8 @@ runPattern1.addEventListener('click', (event) => {
             msg = 'columns in csv file not matching previous file...<br>upload another file'
             requestFile(msg)
           }else {
-            python_path = path.join(__dirname, '../python_modules/src/graank.py')
+            //python_path = path.join(__dirname, '../python_modules/src/graank.py')
+            python_path = '../public/python_modules/src/graank.py'
             python_file = 'graank.py'
             req = [python_path, type, file1, file2, min_sup]
             runPythonCode(req)
@@ -174,7 +176,8 @@ runPattern1.addEventListener('click', (event) => {
   }else{
     type = 1
     showProgress()
-    python_path = path.join(__dirname, '../python_modules/src/graank.py')
+    //python_path = path.join(__dirname, '../python_modules/src/graank.py')
+    python_path = '../public/python_modules/src/graank.py'
     python_file = 'graank.py'
     req = [python_path, type, file, min_sup]
     runPythonCode(req)
