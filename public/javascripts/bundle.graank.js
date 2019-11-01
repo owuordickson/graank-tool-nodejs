@@ -20,7 +20,6 @@ const fileDialog = require('file-dialog')
 //const mime = require('mime')
 const csvJson = require('csvtojson')
 
-
 const selectPattern = document.querySelector('.dropdown-menu')
 const selectDirBtn = document.getElementById('select-directory')
 const uploadFile = document.getElementById('upload-file')
@@ -32,8 +31,7 @@ const msgLabel = document.getElementById('show-message')
 let gradualEP = false
 let file1 = ''
 let file2 = ''
-
-var csv_data = ''//new FormData()
+var csv_data = ''
 
 /*tooltip({
     //
@@ -54,7 +52,7 @@ showMainContent()
 
 selectDirBtn.addEventListener('click', (event) => {
   //ipcRenderer.send('open-file-dialog')
-
+  uploadFile.disabled = true
   fileDialog({ accept: '.csv' })
     .then(file => {
       selectDirBtn.value = file[0].name
@@ -62,6 +60,7 @@ selectDirBtn.addEventListener('click', (event) => {
         var reader = new FileReader()
         reader.onload = function(){
           csv_data = reader.result
+          uploadFile.disabled = false
           //console.log(csv_data)
 
           if (!gradualEP){
@@ -367,15 +366,15 @@ function runPythonCode(request){
   x.onreadystatechange = function(){
     if( x.status === 200 && x.readyState === 4) {
       // Optional callback for when request completes
-      var msg = x.responseText;
-      console.log(msg);
-      console.log(msg.success)
+      var msg = JSON.parse(x.responseText);
+      //console.log(msg);
 
       if (msg.success == 1){
         document.getElementById('text-result').innerHTML = `${msg.pyload}`
         showResultContent()
       }else if (msg.success == 0){
-        msgLabel.innerHTML = '<p>sorry, an error occured</p><br><p>check console for more details</p>'
+        msgLabel.innerHTML = '<p>Sorry, an error occured. Check console for more details</p>'
+        console.log(msg.pyload)
       }
       closeProgress()
     }

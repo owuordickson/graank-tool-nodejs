@@ -20,7 +20,7 @@ router.post('/runPython', function(req, res){
     });
     pythonProcess.stderr.on('data', (data) => {
       console.error("Error: ", data.toString());
-      var response = JSON.stringify({success: 0, pyload: '<p>sorry, an error occured</p><br><p>check console for more details</p>'});
+      var response = JSON.stringify({success: 0, pyload: data.toString()});
       res.send(response);
     })
     pythonProcess.on('close', (code) => {
