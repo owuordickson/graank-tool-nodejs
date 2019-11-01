@@ -11,13 +11,14 @@
 
 .grid-wrapper {
   max-width: 100%;
-  min-height: 100%;
+  max-height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto;
   grid-template-rows: auto 1fr auto;
   grid-gap: 2rem;
   margin-left: 10%;
   margin-right: 10%;
+  overflow: auto;
 }
 
 .grid-title {
@@ -51,7 +52,7 @@
 }
 
 .grid-header {
-  grid-column: 1 / 3;
+  grid-column: 1/3;
   grid-row: 1;
   display: flex;
   justify-content: center;
@@ -61,6 +62,21 @@
   border-radius: 5px;
   padding: 1rem;
   color: var(--color-accent);
+}
+
+.grid-content {
+  grid-column: 1/3;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  border-radius: 5px;
+  padding: 1rem;
+  /*border: 1px solid var(--color-border);*/
+  color: var(--color-accent);
+  animation: slide-out 0.8s forwards;
 }
 
 .grid-content-right {
@@ -105,12 +121,12 @@
   opacity: 0;
 }
 .grid-content-left > main {
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  max-height:100%;
-  overflow:auto ;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-height: 100%;
+  overflow: auto;
 }
 .grid-content-left.is-shown {
   pointer-events: auto;

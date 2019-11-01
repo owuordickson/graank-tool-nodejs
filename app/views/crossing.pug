@@ -1,6 +1,25 @@
 extends layout
+block header
+    link(rel='stylesheet', href='/stylesheets/crossing.css')
+    link(rel="stylesheet", href="/stylesheets/dropzone.min.css")
 
-block layout-content
-    h1
-        strong graank
-    p a data mining tool for Gradual Patterns
+block content
+    .grid-wrapper
+        .grid-header
+            .grid-title
+                h1
+                    strong fuzz-tx
+                p a tool for crossing data steams (csv) based on time
+
+        .grid-content
+            .crossing
+                .crossing-wrapper
+                    form(action="/runPython" id="my-files").dropzone
+
+        .grid-footer
+            div
+                p.grid-footer-title 2019 © Sharemiale
+
+block scripts
+    script(src="javascripts/dropzone.js")
+    script(src="javascripts/crossing.js")

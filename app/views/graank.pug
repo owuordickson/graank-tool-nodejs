@@ -1,74 +1,85 @@
 extends layout
 
-block layout-content
-  .grid-header
-    .grid-title
-      h1
-        strong graank
-      p a data mining tool for Gradual Patterns
+block header
+  link(rel='stylesheet', href='/stylesheets/global.css')
+  link(rel='stylesheet', href='/stylesheets/nativize.css')
+  link(rel='stylesheet', href='/stylesheets/variables.css')
+  link(rel='stylesheet', href='/stylesheets/github.css')
+  link(rel='stylesheet', href='/stylesheets/graank.css')
+  link(rel='stylesheet', href='/stylesheets/section.css')
 
-  .grid-content-right.u-category-brown
-    .graank
-      .graank-wrapper
-        .graank-info Choose a File
-          .graank-meta.u-avoid-clicks File Format: CSV
-        .input-group.mb-3
-          .input-group-prepend
-            button(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pattern-type").btn.btn-outline-secondary.dropdown-toggle Gradual Patterns
-            .dropdown-menu
-              a(data-value='Gradual').dropdown-item Gradual
-              a(data-value='Emerging').dropdown-item Emerging
-          input(type="text" placeholder="choose file . . . " id="select-directory").form-control
-          .input-group-append
-            button(id="upload-file").btn.btn-secondary Upload
+block content
+  .grid-wrapper
+    .grid-header
+      .grid-title
+        h1
+          strong graank
+        p a data mining tool for Gradual Patterns
+
+    .grid-content-right.u-category-brown
+      .graank
+        .graank-wrapper
+          .graank-info Choose a File
+            .graank-meta.u-avoid-clicks File Format: CSV
+          .input-group.mb-3
+            .input-group-prepend
+              button(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pattern-type").btn.btn-outline-secondary.dropdown-toggle Gradual Patterns
+              .dropdown-menu
+                a(data-value='Gradual').dropdown-item Gradual
+                a(data-value='Emerging').dropdown-item Emerging
+            input(type="text" placeholder="choose file . . . " id="select-directory").form-control
+            .input-group-append
+              button(id="upload-file").btn.btn-secondary Upload
+            
+          .graank-progress
+            .spinner-wave
+              div
+              div
+              div
+              div
+              div
+            
+          .graank-response
+            span(id="show-message").graank-response-text.u-category-maroon
           
-        .graank-progress
-          .spinner-wave
-            div
-            div
-            div
-            div
-            div
-          
-        .graank-response
-          span(id="show-message").graank-response-text.u-category-maroon
-        
-        .graank-specs.u-category-subtle
-          .grid-specs-gradual-group
-            .grid-title-sup
-              span(data-tooltip="range: 0.0 to 1.0" data-tooltip-position="top").graank-span-title Support
-            .grid-input-sup
-              input(type="number" min="0.4" max="1.0" step="0.1" value="0.5" id="input-sup1").graank-input-specs
-            .grid-button-exec-sup
-              button(id="run-algorithm1").btn.btn-outline-secondary.graank-btn-exec Get Patterns
+          .graank-specs.u-category-subtle
+            .grid-specs-gradual-group
+              .grid-title-sup
+                span(data-tooltip="range: 0.0 to 1.0" data-tooltip-position="top").graank-span-title Support
+              .grid-input-sup
+                input(type="number" min="0.4" max="1.0" step="0.1" value="0.5" id="input-sup1").graank-input-specs
+              .grid-button-exec-sup
+                button(id="run-algorithm1").btn.btn-outline-secondary.graank-btn-exec Get Patterns
 
-          .grid-specs-temporal-group
-            .grid-title-sup
-              span(data-tooltip="range: 0.0 to 1.0" data-tooltip-position="top").graank-span-title Support
-            .grid-title-rep
-              span(data-tooltip="range: 0.0 to 1.0" data-tooltip-position="top").graank-span-title Representativity
-            .grid-title-ref
-              span(data-tooltip="range: 1 to last-column" data-tooltip-position="top").graank-span-title Reference Column
-            .grid-input-sup
-              input(type="number" min="0.4" step="0.1" value="0.5" id="input-sup2").graank-input-specs
-            .grid-input-rep
-              input(type="number" min="0.4" step="0.1" value="0.8" id="input-rep2").graank-input-specs
-            .grid-input-ref
-              input(type="number" min="1" step="1" value="1" id="input-ref2").graank-input-specs
-            .grid-button-exec
-              button(id="run-algorithm2").btn.btn-outline-secondary.graank-btn-exec Get Patterns
+            .grid-specs-temporal-group
+              .grid-title-sup
+                span(data-tooltip="range: 0.0 to 1.0" data-tooltip-position="top").graank-span-title Support
+              .grid-title-rep
+                span(data-tooltip="range: 0.0 to 1.0" data-tooltip-position="top").graank-span-title Representativity
+              .grid-title-ref
+                span(data-tooltip="range: 1 to last-column" data-tooltip-position="top").graank-span-title Reference Column
+              .grid-input-sup
+                input(type="number" min="0.4" step="0.1" value="0.5" id="input-sup2").graank-input-specs
+              .grid-input-rep
+                input(type="number" min="0.4" step="0.1" value="0.8" id="input-rep2").graank-input-specs
+              .grid-input-ref
+                input(type="number" min="1" step="1" value="1" id="input-ref2").graank-input-specs
+              .grid-button-exec
+                button(id="run-algorithm2").btn.btn-outline-secondary.graank-btn-exec Get Patterns
 
-  .grid-content-left
-    section.section
-      head
-        .section-header.u-category-greenish
-          h1 discovered patterns
-      body
-        .section-body.u-category-greenish
-          p results
+    .grid-content-left
+      .main
+        section.section
+          head
+            .section-header.u-category-greenish
+              h1 discovered patterns
+          body
+            .section-body.u-category-greenish
+              p results
 
-  .grid-footer
-    div
-      p.grid-footer-title 2019 © Sharemiale
+    .grid-footer
+      div
+        p.grid-footer-title 2019 © Sharemiale
 
+block scripts
   script(src="/javascripts/bundle.graank.js")
