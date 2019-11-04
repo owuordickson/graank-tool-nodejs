@@ -1,9 +1,7 @@
 //To be ignored because Browserify creates the bundle.js
 
-//const path = require('path')
 const fileDialog = require('file-dialog')
 //const tooltip = require('electron-tooltip')
-//const mime = require('mime')
 const csvJson = require('csvtojson')
 
 const selectPattern = document.querySelector('.dropdown-menu')
