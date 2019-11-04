@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/runPython', function(req, res){
     console.log("working");
-    console.log(req.body.data[0]);
+    console.log(req.body.data[2]);
 
     var py_req = req.body.data
     var py_path = python_path = path.join(__dirname, py_req[0])

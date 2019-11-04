@@ -14,6 +14,7 @@ import sys
 import ntpath
 import itertools as it
 from collections import Iterable
+from io import StringIO
 
 
 
@@ -218,15 +219,22 @@ def combine_items(lis):
 # ----------------------- GRAANK -----------------------------
 
 
-def Trad(fileName):
-    temp=[]
-    with open(fileName, 'rU') as f:
-        dialect = csv.Sniffer().sniff(f.read(1024), delimiters=";,' '\t")
-        f.seek(0)
-        reader = csv.reader(f, dialect)
-        temp = list(reader)
-        f.close()
+def Trad(csv_string):
+    # temp = fileData
+    # with open(fileName, 'rU') as f:
+    #    dialect = csv.Sniffer().sniff(f.read(1024), delimiters=";,' '\t")
+    #    f.seek(0)
+    #    reader = csv.reader(f, dialect)
+    #    temp = list(reader)
+    #    f.close()
     #print(temp)
+    #sys.stdout(csv_string)
+    f = StringIO(csv_string)
+    dialect = csv.Sniffer().sniff(f.read(1024), delimiters=";,' '\t")
+    f.seek(0)
+    reader = csv.reader(f, dialect)
+    temp = list(reader)
+
     if temp[0][0].replace('.','',1).isdigit() or temp[0][0].isdigit():
         return [[float(temp[j][i]) for j in range(len(temp))] for i in range(len(temp[0]))]
     else:
@@ -454,8 +462,8 @@ def get_maximal_items(init_list):
 # ------------------------- EXECUTE GRAANK and BORDER-GRAANK --------------------------------
 
 
-def algorithm_gradual(file_name, min_sup):
-    title, D1, S1=Graank(Trad(file_name), min_sup, False)
+def algorithm_gradual(file_data, min_sup):
+    title, D1, S1=Graank(Trad(file_data), min_sup, False)
     #print(str(D1))
     for line in title:
         print(str(line) + "<br>")
@@ -512,15 +520,15 @@ request = int(sys.argv[1])
 
 if request == 1:
     # gradual patterns
-    file_name = str(sys.argv[2])
+    file_data = sys.argv[2]
     min_sup = float(sys.argv[3])
-    algorithm_gradual(file_name, min_sup)
+    algorithm_gradual(file_data, min_sup)
 elif request == 11:
     # emerging gradual Patterns
-    file_name1 = str(sys.argv[2])
-    file_name2 = str(sys.argv[3])
+    file_data1 = str(sys.argv[2])
+    file_data2 = str(sys.argv[3])
     min_sup = float(sys.argv[4])
-    algorithm_ep_gradual(file_name1, file_name2, min_sup)
+    algorithm_ep_gradual(file_data1, file_data2, min_sup)
 else:
     print("<h5>Request not found!</h5>")
     sys.stdout.flush()

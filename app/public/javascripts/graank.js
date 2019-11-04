@@ -90,20 +90,15 @@ selectPattern.addEventListener('click', (event) => {
   })
 
 uploadFile.addEventListener('click', (event) => {
-  //csvFile = selectDirBtn.value
-  csvFile = csv_data
   msgLabel.innerHTML = ''
   if (gradualEP){
     showProgress()
-    isCSV = checkFile(csvFile)
-    if (isCSV){
-      file2 = csvFile
-    }else {
-      file2 = ''
-    }
+    file2 = csv_data
+    msgLabel.innerHTML = '<p style="color: green;">csv file verified &#128077</p>'
+    closeProgress()
   }else{
     closeResultContent()
-    showSpecifications(csvFile)
+    showSpecifications(csv_data)
   }
 })
 
@@ -141,7 +136,12 @@ runPattern1.addEventListener('click', (event) => {
         showProgress()
         validateTimeColumn(file2)
         .then((hasTime) => {
-          if (hasTime){
+          if (hasTime == 404){
+            msgLabel.innerHTML = '<p>sorry, an error occured</p>'
+            closeProgress()
+            closeSpecifications()
+          }
+          else if (hasTime){
             file2 = ''
             msg = 'columns in csv file not matching previous file...<br>upload another file'
             requestFile(msg)
@@ -213,24 +213,29 @@ function showProgress(){
 
 function showSpecifications(file){
   showProgress()
-  isCSV = checkFile(file)
-  if (isCSV){
-    validateTimeColumn(file)
-    .then((isValid) => {
-      closeProgress()
-      if (isValid){
-        showTemporalSpecifications()
-      }else {
-        showGradualSpecifications()
-      }
-    })
-    .catch((err) => {
-      console.error(err)
+  
+  validateTimeColumn(file)
+  .then((isValid) => {
+
+    if (isValid == 404){
       msgLabel.innerHTML = '<p>sorry, an error occured</p>'
-      closeProgress()
-    })
-  }
-  closeProgress()
+      closeSpecifications()
+    }
+    else if (isValid){
+      msgLabel.innerHTML = '<p style="color: green;">csv file verified &#128077</p>'
+      showTemporalSpecifications()
+    }else {
+      msgLabel.innerHTML = '<p style="color: green;">csv file verified &#128077</p>'
+      showGradualSpecifications()
+    }
+    closeProgress()
+  })
+  .catch((err) => {
+    console.error(err)
+    msgLabel.innerHTML = '<p>sorry, an error occured</p>'
+    closeProgress()
+    closeSpecifications()
+  })  
 }
 
 function showGradualSpecifications(){
@@ -296,21 +301,6 @@ function closeSpecifications(){
 
   }
 
-function checkFile(file){
-    msgLabel.innerHTML = '<p style="color: green;">csv file verified &#128077</p>'
-    closeProgress()
-    return true
-    /*ext = mime.getType(file)
-    if (ext === 'text/csv' || ext === 'application/csv'){
-      msgLabel.innerHTML = '<p style="color: green;">csv file verified &#128077</p>'
-      closeProgress()
-      return true
-    }else{
-      msgLabel.innerHTML = '<p>file is NOT csv! &#128577</p>'
-      closeProgress()
-      return false
-    }*/
-  }
 
 // ----------------------- upload another file ---------------------------------
 
@@ -327,6 +317,8 @@ async function validateTimeColumn(csvFile){
     const time12Reg = /^(?:1[0-2]|0?[0-9]):[0-5][0-9]:[0-5][0-9]$/
     const time24Reg = /^(?:2[0-3]|[01]?[0-9]):[0-5][0-9]:[0-5][0-9]$/
     const jsonArray = await getJson(csvFile)
+    csv_data = jsonArray
+    //console.log(jsonArray[0])
 
     try {
       for (key in jsonArray[0]){
@@ -340,12 +332,12 @@ async function validateTimeColumn(csvFile){
     }catch (err){
       console.error("Error: ", err.toString())
       msgLabel.innerHTML = '<p>sorry, an error occured</p>'
-      closeProgress()
+      return 404
     }
   }
 
-function getJson(csvPath){
-  return csvJson({delimiter: [";",",",' ',"\t"]}).fromString(csvPath)
+function getJson(csvString){
+  return csvJson({delimiter: [";",",",' ',"\t"]}).fromString(csvString)
 }
 
 function runPythonCode(request){
