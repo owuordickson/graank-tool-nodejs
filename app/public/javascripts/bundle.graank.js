@@ -330,7 +330,7 @@ async function validateTimeColumn(csvFile){
     const time12Reg = /^(?:1[0-2]|0?[0-9]):[0-5][0-9]:[0-5][0-9]$/
     const time24Reg = /^(?:2[0-3]|[01]?[0-9]):[0-5][0-9]:[0-5][0-9]$/
     const jsonArray = await getJson(csvFile)
-    csv_data = jsonArray
+    csv_data = JSON.stringify(jsonArray)
     //console.log(jsonArray[0])
 
     try {
@@ -361,7 +361,7 @@ function runPythonCode(request){
     if( x.status === 200 && x.readyState === 4) {
       // Optional callback for when request completes
       var msg = JSON.parse(x.responseText);
-      //console.log(msg);
+      console.log(msg);
 
       if (msg.success == 1){
         document.getElementById('text-result').innerHTML = `${msg.pyload}`

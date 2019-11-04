@@ -8,6 +8,7 @@ Modified by Dickson Owuor Sat Feb 23 18:17:35 2019
 
 """
 import csv
+import json
 import numpy as np
 import gc
 import sys
@@ -219,21 +220,19 @@ def combine_items(lis):
 # ----------------------- GRAANK -----------------------------
 
 
-def Trad(csv_string):
-    # temp = fileData
-    # with open(fileName, 'rU') as f:
-    #    dialect = csv.Sniffer().sniff(f.read(1024), delimiters=";,' '\t")
-    #    f.seek(0)
-    #    reader = csv.reader(f, dialect)
-    #    temp = list(reader)
-    #    f.close()
-    #print(temp)
-    #sys.stdout(csv_string)
-    f = StringIO(csv_string)
-    dialect = csv.Sniffer().sniff(f.read(1024), delimiters=";,' '\t")
-    f.seek(0)
-    reader = csv.reader(f, dialect)
-    temp = list(reader)
+def Trad(json_string):
+    data = json.loads(json_string)
+    raw_titles = list(data[0].keys())
+    temp = list()
+    var_temp = list()
+    for t in raw_titles:
+        var_temp.append(str(t))
+    temp.append(var_temp)
+    for item in data:
+        var_temp = list()
+        for key, value in item.items():
+            var_temp.append(float(value))
+        temp.append(var_temp)
 
     if temp[0][0].replace('.','',1).isdigit() or temp[0][0].isdigit():
         return [[float(temp[j][i]) for j in range(len(temp))] for i in range(len(temp[0]))]

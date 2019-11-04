@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/runPython', function(req, res){
     console.log("working");
-    console.log(req.body.data[2]);
+    console.log(req.body.data[0]);
 
     var py_req = req.body.data
     var py_path = python_path = path.join(__dirname, py_req[0])
@@ -19,7 +19,7 @@ router.post('/runPython', function(req, res){
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
         console.log("finished working");
-        var response = JSON.stringify({success: 1, pyload: data});
+        var response = JSON.stringify({success: 1, pyload: data.toString()});
         res.send(response);
     });
     pythonProcess.stderr.on('data', (data) => {
