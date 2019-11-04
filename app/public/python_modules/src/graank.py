@@ -7,7 +7,6 @@ Created on Fri Jun 12 14:31:16 2015
 Modified by Dickson Owuor Sat Feb 23 18:17:35 2019
 
 """
-import csv
 import json
 import numpy as np
 import gc
@@ -15,7 +14,6 @@ import sys
 import ntpath
 import itertools as it
 from collections import Iterable
-from io import StringIO
 
 
 
@@ -231,7 +229,7 @@ def Trad(json_string):
     for item in data:
         var_temp = list()
         for key, value in item.items():
-            var_temp.append(float(value))
+            var_temp.append(str(value))
         temp.append(var_temp)
 
     if temp[0][0].replace('.','',1).isdigit() or temp[0][0].isdigit():

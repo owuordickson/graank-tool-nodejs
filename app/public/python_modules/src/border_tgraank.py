@@ -16,11 +16,11 @@ Usage:
 
 """
 
+import json
 import sys
 import numpy as np
 import gc
 import skfuzzy as fuzzy
-import csv
 from dateutil.parser import parse
 import time
 import itertools as it
@@ -169,17 +169,29 @@ class DataTransform:
         return True, time_diffs
 
     @staticmethod
-    def test_dataset(filename):
+    def test_dataset(json_string):
         # NB: test the dataset attributes: time|item_1|item_2|...|item_n
         # return true and (list) dataset if it is ok
         # 1. retrieve dataset from file
-        with open(filename, 'rU') as f:
-            dialect = csv.Sniffer().sniff(f.read(1024), delimiters=";,' '\t")
-            f.seek(0)
-            reader = csv.reader(f, dialect)
-            temp = list(reader)
-            f.close()
-
+        data = json.loads(json_string)
+        raw_titles = list(data[0].keys())
+        temp = list()
+        var_temp = list()
+        for t in raw_titles:
+            var_temp.append(str(t))
+        temp.append(var_temp)
+        for item in data:
+            var_temp = list()
+            for key, value in item.items():
+                var_temp.append(str(value))
+            temp.append(var_temp)
+        #with open(filename, 'rU') as f:
+        #    dialect = csv.Sniffer().sniff(f.read(1024), delimiters=";,' '\t")
+        #    f.seek(0)
+        #    reader = csv.reader(f, dialect)
+        #    temp = list(reader)
+        #    f.close()
+        
         # 2. Retrieve time and their columns
         time_cols = list()
         for i in range(len(temp[1])):  # check every column for time format
@@ -190,7 +202,6 @@ class DataTransform:
                     time_cols.append(i)
             except ValueError:
                 continue
-
         if time_cols:
             return time_cols, temp
         else:
