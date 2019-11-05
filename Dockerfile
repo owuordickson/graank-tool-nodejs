@@ -1,8 +1,10 @@
-FROM nikolaik/python-nodejs:python3.6-nodejs12-alpine
+FROM node:12
 
 RUN mkdir /py_dependencies
 WORKDIR /py_dependencies
 COPY python_requirements.txt /py_dependencies/requirements.txt
+RUN apt-get update
+RUN apt-get install -y python-pip
 RUN pip install -r requirements.txt
 
 RUN mkdir /opt/app
