@@ -1,4 +1,4 @@
-FROM nikolaik/python-nodejs:python3.6-nodejs13-alpine
+FROM nikolaik/python-nodejs:python3.6-nodejs12-alpine
 
 RUN mkdir /py_dependencies
 WORKDIR /py_dependencies
