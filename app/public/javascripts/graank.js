@@ -13,8 +13,11 @@ const runPattern2 = document.getElementById('run-algorithm2')
 const msgLabel = document.getElementById('show-message')
 
 let gradualEP = false
-let file1 = ''
-let file2 = ''
+var file_name = ''
+var file_name1 = ''
+var file_name2 =''
+let csv_data1 = ''
+let csv_data2 = ''
 var csv_data = ''
 
 /*tooltip({
@@ -39,7 +42,8 @@ selectDirBtn.addEventListener('click', (event) => {
   uploadFile.disabled = true
   fileDialog({ accept: '.csv' })
     .then(file => {
-      selectDirBtn.value = file[0].name
+      file_name = file[0].name
+      selectDirBtn.value = file_name
 
         var reader = new FileReader()
         reader.onload = function(){
@@ -91,7 +95,8 @@ uploadFile.addEventListener('click', (event) => {
   msgLabel.innerHTML = ''
   if (gradualEP){
     showProgress()
-    file2 = csv_data
+    csv_data2 = csv_data
+    file_name2 = file_name
     msgLabel.innerHTML = '<p style="color: green;">csv file verified &#128077</p>'
     closeProgress()
   }else{
@@ -101,7 +106,7 @@ uploadFile.addEventListener('click', (event) => {
 })
 
 runPattern2.addEventListener('click', (event) => {
-  file = csv_data//selectDirBtn.value
+  //file = csv_data//selectDirBtn.value
   ref_col = document.getElementById('input-ref2').value
   min_sup = document.getElementById('input-sup2').value
   min_rep = document.getElementById('input-rep2').value
@@ -116,23 +121,23 @@ runPattern2.addEventListener('click', (event) => {
   //python_path = path.join(__dirname, '../python_modules/src/border_tgraank.py')
   python_path = '../public/python_modules/src/border_tgraank.py'
   python_file = 'border_tgraank.py'
-  req = [python_path, type, file, (ref_col-1), min_sup, min_rep]
+  req = [python_path, type, csv_data, (ref_col-1), min_sup, min_rep]
   //console.log(req)
   runPythonCode(req)
 })
 
 runPattern1.addEventListener('click', (event) => {
 
-  file = csv_data//selectDirBtn.value
+  //file = csv_data//selectDirBtn.value
   min_sup = document.getElementById('input-sup1').value
 
   patternType = document.getElementById('pattern-type').innerHTML
   if(patternType === 'Emerging Patterns'){
     type = 11
-    if (file1 != ''){
-      if (file2 != '' && file1 != file2){
+    if (file_name1 != ''){
+      if (file_name2 != '' && file_name1 != file_name2){
         showProgress()
-        validateTimeColumn(file2)
+        validateTimeColumn(csv_data2)
         .then((hasTime) => {
           if (hasTime == 404){
             msgLabel.innerHTML = '<p>sorry, an error occured</p>'
@@ -140,33 +145,38 @@ runPattern1.addEventListener('click', (event) => {
             closeSpecifications()
           }
           else if (hasTime){
-            file2 = ''
+            file_name2 = ''
+            csv_data2 = ''
             msg = 'columns in csv file not matching previous file...<br>upload another file'
             requestFile(msg)
           }else {
             //python_path = path.join(__dirname, '../python_modules/src/graank.py')
             python_path = '../public/python_modules/src/graank.py'
             python_file = 'graank.py'
-            req = [python_path, type, file1, file2, min_sup]
+            req = [python_path, type, csv_data1, csv_data2, min_sup]
             runPythonCode(req)
-            file1 = ''
-            file2 = ''
+            csv_data1 = ''
+            csv_data2 = ''
             gradualEP = false
           }
         })
         .catch((err) => {
-          file2 = ''
+          file_name2 =''
+          csv_data2 = ''
           msg = 'sorry system error...upload another file'
           requestFile(msg)
         })
       }else {
-        file2 = ''
+        file_name2 = ''
+        csv_data2 = ''
         msg = 'file is blank or may be similar to previous file...<br>upload another file'
         requestFile(msg)
       }
     }else{
-      file1 = file
-      file2 = ''
+      csv_data1 = csv_data
+      csv_data2 = ''
+      file_name1 = file_name
+      file_name2 = ''
       msg = 'Please upload 2nd file'
       requestFile(msg)
       gradualEP = true
@@ -177,7 +187,7 @@ runPattern1.addEventListener('click', (event) => {
     //python_path = path.join(__dirname, '../python_modules/src/graank.py')
     python_path = '../public/python_modules/src/graank.py'
     python_file = 'graank.py'
-    req = [python_path, type, file, min_sup]
+    req = [python_path, type, csv_data, min_sup]
     runPythonCode(req)
   }
 })
