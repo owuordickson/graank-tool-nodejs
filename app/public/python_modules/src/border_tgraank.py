@@ -59,14 +59,13 @@ class DataTransform:
         multi_data = [None] * no_columns
         i = 0
         for c in range(len(self.data[0])):
-            multi_data[i] = []
-            for r in range(1, len(self.data)):  # ignore title row
-                if c in self.time_cols:
-                    continue  # skip columns with time
-                else:
+            if c in self.time_cols:
+                continue  # skip columns with time
+            else:
+                multi_data[i] = []
+                for r in range(1, len(self.data)):  # ignore title row
                     item = self.data[r][c]
                     multi_data[i].append(item)
-            if not (c in self.time_cols):
                 i += 1
         return multi_data
 
