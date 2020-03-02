@@ -1,7 +1,7 @@
 extends layout
 block header
-    link(rel='stylesheet', href='/stylesheets/crossing.css')
     link(rel="stylesheet", href="/stylesheets/dropzone.min.css")
+    link(rel='stylesheet', href='/stylesheets/crossing.css')
 
 block content
     .grid-wrapper
@@ -14,12 +14,13 @@ block content
         .grid-content
             .crossing
                 .crossing-wrapper
-                    form(action="/runPython" id="my-files").dropzone
+                    form(action="/x/runPythonCrossing" id="csvFiles" enctype="multipart/form-data").dropzone
 
         .grid-footer
             div
                 p.grid-footer-title 2020 © Sharemiale
 
 block scripts
-    script(src="javascripts/dropzone.js")
+    script(src="javascripts/dropzone.min.js")
     script(src="javascripts/crossing.js")
+    

@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-
+const fileUpload = require('express-fileupload');
 
 var graankRouter = require('./routes/graank.route');
 var crossRouter = require('./routes/crossing.route');
@@ -21,6 +21,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json({limit: '100mb'}));
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 app.use(cookieParser());
+app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', graankRouter);

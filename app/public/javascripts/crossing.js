@@ -1,6 +1,6 @@
 (function() {
 
-    /*$("div#csvFiles").dropzone({
+    $("div#csvFiles").dropzone({
         url: '/runPython',
         margin: 2,
         height: 200,
@@ -15,5 +15,5 @@
         success: function(res, index){
             console.log(res, index);
         }
-    });*/
+    });
 }());

@@ -7,9 +7,9 @@ router.get('/', function(req, res, next) {
   res.render('crossing', { title: 'fuzztx' });
 });
 
-router.post('/runPython', function(req, res){
+router.post('/runPythonCrossing', function(req, res){
   console.log("working");
-  //console.log(req.body.data[0]);
+  console.log(req.body.data);
   res.send("ok");
   /*var py_req = req.body.data
   var py_path = python_path = path.join(__dirname, py_req[0])

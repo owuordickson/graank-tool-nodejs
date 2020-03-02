@@ -23,3 +23,8 @@
   margin: 0;
   padding: 0;
 }
+
+.dropzone{
+  min-height:150px;
+  border:2px dashed rgba(167, 12, 12, 0.3);
+}
