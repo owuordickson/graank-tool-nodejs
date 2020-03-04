@@ -12,8 +12,19 @@ router.get('/', function(req, res, next) {
 
 router.post('/upload', function(req, res){
   console.log("uploading");
-  csvFiles.push(req.files.file)
-  console.log("uploaded");
+  not_uploaded = 1
+  new_file = req.files.file;
+  for(i=0; i<csvFiles.length; i++){
+    if (new_file.name == csvFiles[i].name){
+      not_uploaded = 0
+      console.log("already uploaded");
+      break;
+    }
+  }
+  if(not_uploaded == 1){
+    csvFiles.push(new_file)
+    console.log("uploaded");
+  }
   res.send("finished uploading");
 });
 
@@ -28,7 +39,7 @@ router.post('/runPython', function(req, res){
     var py_path = python_path = path.join(__dirname, py_req[0])
     py_req[0] = py_path
     console.log(py_path)
-    /*const pythonProcess = spawn('python', req.body.data);
+    const pythonProcess = spawn('python', req.body.data);
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
         console.log("finished working");
@@ -42,10 +53,10 @@ router.post('/runPython', function(req, res){
     })
     pythonProcess.on('close', (code) => {
       console.log("Child exited with code ", code);
-    })*/
+    })
   }else{
-    console.error("Error: Upload at least 2 csv files");
-    var response = JSON.stringify({success: 0, pyload: "Upload at least 2 csv files"});
+    console.error("Error: Upload at least 2 different csv files");
+    var response = JSON.stringify({success: 0, pyload: "Upload at least 2 DIFFERENT csv files"});
     res.send(response);
   }
 

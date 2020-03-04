@@ -38,6 +38,7 @@ function runPythonCode(request){
         }else if (msg.success == 0){
           //msgLabel.innerHTML = '<p>Sorry, an error occured. Check console for more details</p>'
           console.log(msg.pyload)
+          alert(msg.pyload)
         }
         //closeProgress()
       }
