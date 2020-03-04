@@ -3,6 +3,7 @@ var router = express.Router();
 var spawn = require('child_process').spawn
 var path = require('path');
 
+var fs = require("fs"); 
 //var csv = require('csv');
 
 var csvFiles = [];
@@ -38,6 +39,11 @@ router.post('/upload', function(req, res){
     //  console.log(data);
     //});
     //console.log(data);
+
+    //fs.readFile(new_file.path, function(err, data){
+    //  if (err) throw err;
+    //  console.log(data);
+    //});
 
     csvFiles.push(new_file);
     console.log("uploaded");
