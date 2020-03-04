@@ -1,19 +1,13 @@
-(function() {
+Dropzone.autoDiscover = false;
 
-    $("div#csvFiles").dropzone({
-        url: '/runPython',
-        margin: 2,
-        height: 200,
-        allowedFileTypes: 'csv',
-        text: 'Drop (csv) files here to upload',
-        params:{
-            'action': 'save'
-        },
-        filesName: 'files',
-        uploadOnDrop: true,
-        uploadOnPreview: false,
-        success: function(res, index){
-            console.log(res, index);
-        }
+const csvFiles = document.getElementById('csv-files')
+
+function setupDropzone(){
+    var myDropzone = new Dropzone(csvFiles, {
+        url: "/x/runPython",
+        acceptedFiles: 'text/csv',
+        maxFilesize: 100
     });
-}());
+}
+
+setupDropzone()
