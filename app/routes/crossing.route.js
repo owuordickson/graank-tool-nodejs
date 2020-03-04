@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var spawn = require('child_process').spawn
-var path = require('path')
+var path = require('path');
+
+//var csv = require('csv');
 
 var csvFiles = [];
 
@@ -22,7 +24,22 @@ router.post('/upload', function(req, res){
     }
   }
   if(not_uploaded == 1){
-    csvFiles.push(new_file)
+    //var reader = new FileReader();
+    //reader.onload = function(){
+    //  data = reader.result;
+      //csv.parse(reader.result, (err, data) => {
+        //  console.log(data);
+     //});
+    //  console.log(data);
+    //}
+    //reader.readAsBinaryString(req.files[0]);
+    //data = reader.readAsText(new_file)
+    //csv.parse(reader.readAsText(new_file), (err, data) => {
+    //  console.log(data);
+    //});
+    //console.log(data);
+
+    csvFiles.push(new_file);
     console.log("uploaded");
   }
   res.send("finished uploading");
@@ -39,7 +56,7 @@ router.post('/runPython', function(req, res){
     var py_path = python_path = path.join(__dirname, py_req[0])
     py_req[0] = py_path
     console.log(py_path)
-    const pythonProcess = spawn('python', req.body.data);
+    /*const pythonProcess = spawn('python', req.body.data);
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
         console.log("finished working");
@@ -53,7 +70,7 @@ router.post('/runPython', function(req, res){
     })
     pythonProcess.on('close', (code) => {
       console.log("Child exited with code ", code);
-    })
+    })*/
   }else{
     console.error("Error: Upload at least 2 different csv files");
     var response = JSON.stringify({success: 0, pyload: "Upload at least 2 DIFFERENT csv files"});

@@ -15,7 +15,7 @@ setupDropzone()
 
 
 crossFiles.addEventListener('click', (event) => {
-    python_path = '../public/python_modules/src/init_crossing.py'
+    python_path = '../public/python_modules/src/tx_csv.py'
     req = [python_path]
     runPythonCode(req)
 });
