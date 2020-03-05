@@ -3,12 +3,10 @@ var router = express.Router();
 var spawn = require('child_process').spawn
 var path = require('path');
 
-var fs = require("fs"); 
-//var csv = require('csv');
 const csvJson = require('csvtojson')
-const { convertArrayToCSV } = require('convert-array-to-csv');
 
 var csvFiles = [];
+var csvPaths = [];
 
 /* GET crossing csv files */
 router.get('/', function(req, res, next) {
@@ -20,12 +18,13 @@ router.post('/upload', async function(req, res){
   not_uploaded = 1
   new_file = req.files.file;
   for(i=0; i<csvFiles.length; i++){
-    if (new_file.name == csvFiles[i].name){
+    if (new_file.name == csvPaths[i]){
       not_uploaded = 0
       console.log("already uploaded");
       break;
     }
   }
+
   if(not_uploaded == 1){
     var csv_str = new_file.data.toString();
     const jsonArray = await getJson(csv_str)
@@ -33,7 +32,7 @@ router.post('/upload', async function(req, res){
     var json_str = {file: count, data: jsonArray}
 
     csvFiles.push(json_str);
-    //console.log(JSON.stringify(csvFiles));
+    csvPaths.push(new_file.name)
     console.log("uploaded");
   }
   res.send("finished uploading");
