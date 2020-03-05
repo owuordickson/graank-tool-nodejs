@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/owuordickson/graank-tool-nodejs#readme",
   "dependencies": {
+    "blob": "^0.1.0",
     "child_process": "^1.0.2",
     "convert-array-to-csv": "^1.0.10",
     "cookie-parser": "~1.4.4",

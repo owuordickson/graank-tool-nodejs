@@ -43,7 +43,19 @@ function runPythonCode(request){
             }
             //closeProgress()
         }catch(err){
-            console.log(x.response)
+            //window.location.replace('/x/download')
+            //console.log(x.response);
+            
+            var blob = new Blob([x.response], {type: 'text/csv'});
+            console.log(blob);
+            let a = document.createElement("a");
+            a.style = "display: none";
+            document.body.appendChild(a);
+            let url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = 'x_data.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
         }
       }
     }

@@ -21,7 +21,7 @@ router.post('/upload', async function(req, res){
   new_file = req.files.file;
   for(i=0; i<csvFiles.length; i++){
     if (new_file.name == csvFiles[i].name){
-      //not_uploaded = 0
+      not_uploaded = 0
       console.log("already uploaded");
       break;
     }
@@ -58,23 +58,10 @@ router.post('/runPython', function(req, res){
         //var response = JSON.stringify({success: 1, pyload: data.toString()});
         //res.set("Content-Type", "application/json; charset=UTF-8");
         //res.send(response);
-        
-        /*arr_data = data.toString().replace(/^\[|\]$/, "").split( ", " );//  data;
-        const csv_data = convertArrayToCSV(arr_data, {
-          separator: '\t'
-        });*/
-        csv_data = data.toString();
-        //res.setHeader('Content-Disposition', 'attachment; filename=x_data.csv');
-        /*res.attachment('x_data.csv');
-        res.set("Content-Type", "text/csv; charset=UTF-8");
-        res.send(csv_data);*/
 
-        res.writeHead(200, {
-          'Content-Type': 'text/csv',
-          'Content-Disposition': 'attachment; filename=x_data.csv'
-        });
-        
-        res.end(csv_data);
+        var csv_data = data.toString();
+        res.set("Content-Type", "text/csv; charset=UTF-8");
+        res.send(csv_data);
     });
     pythonProcess.stderr.on('data', (data) => {
       console.error("Error: ", data.toString());
