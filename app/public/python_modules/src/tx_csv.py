@@ -340,11 +340,11 @@ class FuzzTX:
         now = datetime.now()
         stamp = int(datetime.timestamp(now))
         #path = name + str(stamp) + str('.csv')
-        #output = io.StringIO()
+        output = StringIO()
         #with open(path, 'w') as f:
-        #writer = csv.writer(output)
-        #writer.writerows(csv_data)
-        #return output
+        writer = csv.writer(output)
+        writer.writerows(csv_data)
+        return output.getvalue()
         #f.close()
 
     @staticmethod
@@ -362,8 +362,8 @@ def init_algorithm(allow_char, f_files, cores, allow_para):
     try:
         obj = FuzzTX(f_files, allow_char, cores, allow_para)
         x_data = obj.cross_data()
-        # x_file = FuzzTX.write_csv(x_data)
-        print(x_data)
+        x_file = FuzzTX.write_csv(x_data)
+        print(x_file)
         sys.stdout.flush()
         # return wr_line
     except Exception as error:

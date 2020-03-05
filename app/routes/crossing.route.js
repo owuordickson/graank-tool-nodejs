@@ -6,6 +6,7 @@ var path = require('path');
 //var fs = require("fs"); 
 //var csv = require('csv');
 const csvJson = require('csvtojson')
+const { convertArrayToCSV } = require('convert-array-to-csv');
 
 var csvFiles = [];
 
@@ -26,21 +27,6 @@ router.post('/upload', async function(req, res){
     }
   }
   if(not_uploaded == 1){
-    //var reader = new FileReader();
-    //reader.onload = function(){
-    //  data = reader.result;
-      //csv.parse(reader.result, (err, data) => {
-        //  console.log(data);
-     //});
-    //  console.log(data);
-    //}
-    //reader.readAsBinaryString(req.files[0]);
-    //data = reader.readAsText(new_file)
-
-    //fs.readFile(new_file.path, function(err, data){
-    //  if (err) throw err;
-    //  console.log(data);
-    //});
     var csv_str = new_file.data.toString();
     const jsonArray = await getJson(csv_str)
     var count = csvFiles.length
@@ -69,12 +55,18 @@ router.post('/runPython', function(req, res){
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
         console.log("finished working");
-        var response = JSON.stringify({success: 1, pyload: data.toString()});
+        //var response = JSON.stringify({success: 1, pyload: data.toString()});
         //res.set("Content-Type", "application/json; charset=UTF-8");
-        res.send(response);
-        //res.set("Content-Type", "text/csv; charset=UTF-8");
-        //res.setHeader('Content-Disposition', 'attachment; filename=x_data.csv');
-        //res.send(data);
+        //res.send(response);
+        
+        /*arr_data = data.toString().replace(/^\[|\]$/, "").split( ", " );//  data;
+        const csv_data = convertArrayToCSV(arr_data, {
+          separator: '\t'
+        });*/
+        csv_data = data.toString();
+        res.set("Content-Type", "text/csv; charset=UTF-8");
+        res.setHeader('Content-Disposition', 'attachment; filename=x_data.csv');
+        res.send(csv_data);
     });
     pythonProcess.stderr.on('data', (data) => {
       console.error("Error: ", data.toString());
