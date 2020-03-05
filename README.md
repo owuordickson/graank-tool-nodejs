@@ -13,13 +13,13 @@ Download/clone into a local package. There are two options for installing this a
 1. Install **Docker**, build the image from the ```Dockerfile``` and create a container to run the image:
 
 ``` shell
-docker image build -t graank:nodejs
+cd graank-tool-nodejs-master && docker image build -t graank:nodejs
 
 docker run -d graank:nodejs
 
 ```
 
-### OR
+### or
 
 ``` shell
 docker pull owuordickson/graank:nodejs-tool
@@ -31,7 +31,7 @@ docker run -d owuordickson/graank:nodejs-tool
 2. Install **Nodejs** and **npm**, then run the application:
 
 ``` shell
-npm install
+cd app && npm install
 
 npm start
 
@@ -39,4 +39,4 @@ npm start
 
 ## Usage
 
-Launch your Browser and go to: <http://localhost:80> or <http://localhost/x:80>
+Launch your Browser and go to: <http://localhost:80> or <http://localhost:80/x>

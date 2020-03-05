@@ -360,8 +360,7 @@ def Graank(D_in,a,eq=False):
         temp = float(np.sum(i[1]))/float(n*(n-1.0)/2.0)
         if temp < a:
             G.remove(i)
-#        else:
-#            res.append(i[0])
+    #      else:
     while G!=[]:
         G=APRIORIgen(G,a,n)
         #print G

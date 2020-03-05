@@ -27,20 +27,24 @@ function runPythonCode(request){
     var x = new XMLHttpRequest();
     x.onreadystatechange = function(){
       if( x.status === 200 && x.readyState === 4) {
-        // Optional callback for when request completes
-        var msg = JSON.parse(x.responseText);
-        console.log(msg);
-  
-        if (msg.success == 1){
-          //document.getElementById('text-result').innerHTML = `${msg.pyload}`
-          //showResultContent()
-          console.log(msg.pyload)
-        }else if (msg.success == 0){
-          //msgLabel.innerHTML = '<p>Sorry, an error occured. Check console for more details</p>'
-          console.log(msg.pyload)
-          alert(msg.pyload)
+        try{
+            // Optional callback for when request completes
+            var msg = JSON.parse(x.responseText);
+            console.log(msg);
+    
+            if (msg.success == 1){
+                //document.getElementById('text-result').innerHTML = `${msg.pyload}`
+                //showResultContent()
+                console.log(msg.pyload)
+            }else if (msg.success == 0){
+                //msgLabel.innerHTML = '<p>Sorry, an error occured. Check console for more details</p>'
+                console.log(msg.pyload)
+                alert(msg.pyload)
+            }
+            //closeProgress()
+        }catch(err){
+            console.log(x.response)
         }
-        //closeProgress()
       }
     }
     x.open('POST', '/x/runPython', true);

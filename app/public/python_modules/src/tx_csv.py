@@ -18,18 +18,20 @@ import numpy as np
 import skfuzzy as fuzzy
 
 import sys
+from io import StringIO
+import json
 
 
 class DataStream:
 
-    def __init__(self, _id, path, allow_char, cores):
+    def __init__(self, _id, r_data, allow_char, cores):
         self.id = _id
-        self.path = path
+        self.path = r_data[0]
         self.allow_char = allow_char
         self.cores = cores
-        self.raw_data = DataStream.read_csv(path)
+        self.raw_data = r_data  # DataStream.read_csv(path)
         if len(self.raw_data) == 0:
-            print("csv file read error")
+            # print("csv file read error")
             raise Exception("Unable to read csv file: " + path)
         else:
             self.data = self.raw_data
@@ -77,7 +79,7 @@ class DataStream:
                     timestamps.append(t_stamp)
             timestamps.sort()
             allowed_cols.sort()
-            print("Finished fetching timestamps")
+            # print("Finished fetching timestamps")
         return allowed_cols, timestamps
 
     def get_time_stamp(self, i):
@@ -91,7 +93,7 @@ class DataStream:
             raise Exception(str(t_value) + ' : time is invalid for ' + str(self.path))
 
     def test_ds_data(self, row):
-        print("testing data stream data")
+        # print("testing data stream data")
         time_index = None
         allowed_cols = list()
         size = len(row)
@@ -132,14 +134,15 @@ class DataStream:
                     return False, False
 
     @staticmethod
-    def read_csv(file_path):
+    def read_csv(file_str):
         # 1. retrieve data-set from file
-        with open(file_path, 'r') as f:
-            dialect = csv.Sniffer().sniff(f.readline(), delimiters=";,' '\t")
-            f.seek(0)
-            reader = csv.reader(f, dialect)
-            temp = list(reader)
-            f.close()
+        f = StringIO(file_str)
+        # with open(file_path, 'r') as f:
+        dialect = csv.Sniffer().sniff(f.readline(), delimiters=";,' '\t")
+        f.seek(0)
+        reader = csv.reader(f, dialect)
+        temp = list(reader)
+        f.close()
         return temp
 
 
@@ -170,7 +173,7 @@ class FuzzTX:
                 self.col_size = 0
                 self.boundaries = []
                 # self.data_streams, self.time_list = self.get_observations()
-                print("data streams fetched")
+                # print("data streams fetched")
             except Exception as error:
                 raise Exception("CSV Error: "+str(error))
         else:
@@ -193,7 +196,7 @@ class FuzzTX:
         return list_ds
 
     def cross_data(self):
-        print("starting crossing")
+        # print("starting crossing")
         d_streams = self.d_streams
         boundaries, extremes = self.get_boundaries()
         self.boundaries = boundaries
@@ -226,8 +229,7 @@ class FuzzTX:
         x_data = list(filter(bool, x_data))
         x_data.sort()
         x_data.insert(0, title_tuple)
-
-        print("Finished crossing")
+        # print("Finished crossing")
         return x_data
 
     def get_boundaries(self):
@@ -315,21 +317,35 @@ class FuzzTX:
 
     @staticmethod
     def test_paths(path_str):
-        path_list = [x.strip() for x in path_str.split(',')]
-        for path in path_list:
-            if path == '':
-                path_list.remove(path)
-        return path_list
+        # path_list = [x.strip() for x in path_str.split(',')]
+        #for path in path_list:
+        #    if path == '':
+        #        path_list.remove(path)
+        #return path_list
+        file_list = []
+        raw_data = json.loads(path_str)
+        for item in raw_data:
+            temp_list = []
+            temp_list.append(list(item["data"][0].keys()))
+            for obj in item["data"]:
+                row = []
+                for key, value in obj.items():
+                    row.append(value)
+                temp_list.append(row)
+            file_list.append(temp_list)
+        return file_list
 
     @staticmethod
     def write_csv(csv_data, name='x_data'):
         now = datetime.now()
         stamp = int(datetime.timestamp(now))
-        path = name + str(stamp) + str('.csv')
-        with open(path, 'w') as f:
-            writer = csv.writer(f)
-            writer.writerows(csv_data)
-            f.close()
+        #path = name + str(stamp) + str('.csv')
+        #output = io.StringIO()
+        #with open(path, 'w') as f:
+        #writer = csv.writer(output)
+        #writer.writerows(csv_data)
+        #return output
+        #f.close()
 
     @staticmethod
     def write_file(data, path):
@@ -346,8 +362,8 @@ def init_algorithm(allow_char, f_files, cores, allow_para):
     try:
         obj = FuzzTX(f_files, allow_char, cores, allow_para)
         x_data = obj.cross_data()
+        # x_file = FuzzTX.write_csv(x_data)
         print(x_data)
-        # FuzzTX.write_csv(x_data)
         sys.stdout.flush()
         # return wr_line
     except Exception as error:
@@ -357,5 +373,5 @@ def init_algorithm(allow_char, f_files, cores, allow_para):
         # return wr_line
 
 
-req_files = int(sys.argv[1])
+req_files = sys.argv[1]
 init_algorithm(0, req_files, 2, 0)
