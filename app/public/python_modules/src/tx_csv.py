@@ -32,7 +32,7 @@ class DataStream:
         self.raw_data = r_data  # DataStream.read_csv(path)
         if len(self.raw_data) == 0:
             # print("csv file read error")
-            raise Exception("Unable to read csv file: " + path)
+            raise Exception("Unable to read csv file")
         else:
             self.data = self.raw_data
             self.titles = self.get_titles()
@@ -61,7 +61,7 @@ class DataStream:
         # test for time from any row
         t_index, allowed_cols = self.test_ds_data(data[1])
         if t_index is None:
-            raise Exception("No time found in file: " + str(self.path))
+            raise Exception("No time found in file")
             # return False
         else:
             self.time_col = t_index
@@ -90,7 +90,7 @@ class DataStream:
         if time_ok:
             return t_stamp
         else:
-            raise Exception(str(t_value) + ' : time is invalid for ' + str(self.path))
+            raise Exception(str(t_value) + ' time is invalid')
 
     def test_ds_data(self, row):
         # print("testing data stream data")
@@ -175,9 +175,9 @@ class FuzzTX:
                 # self.data_streams, self.time_list = self.get_observations()
                 # print("data streams fetched")
             except Exception as error:
-                raise Exception("CSV Error: "+str(error))
+                raise Exception("CSV Error "+str(error))
         else:
-            raise Exception("Python Error: less than 2 csv files picked")
+            raise Exception("Python Error less than 2 csv files picked")
 
     def get_size(self):
         size = len(self.d_streams)
@@ -367,8 +367,9 @@ def init_algorithm(allow_char, f_files, cores, allow_para):
         sys.stdout.flush()
         # return wr_line
     except Exception as error:
-        wr_line = "Failed: " + str(error)
-        print({"success": 0, "pyload": wr_line})
+        wr_line = "Failed " + str(error)
+        json_str = json.dumps({"success": 0, "pyload": wr_line});
+        print(json_str)
         sys.stdout.flush()
         # return wr_line
 
