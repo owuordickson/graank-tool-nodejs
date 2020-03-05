@@ -368,7 +368,7 @@ def init_algorithm(allow_char, f_files, cores, allow_para):
         # return wr_line
     except Exception as error:
         wr_line = "Failed: " + str(error)
-        print(str("<h5>"+wr_line+"</h5>"))
+        print({"success": 0, "pyload": wr_line})
         sys.stdout.flush()
         # return wr_line
 

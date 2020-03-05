@@ -54,13 +54,18 @@ router.post('/runPython', function(req, res){
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
         console.log("finished working");
-        //var response = JSON.stringify({success: 1, pyload: data.toString()});
-        //res.set("Content-Type", "application/json; charset=UTF-8");
-        //res.send(response);
+        
+        try{
+          var response = JSON.stringify(data.toString());
+          res.set("Content-Type", "application/json; charset=UTF-8");
+          res.send(response);
+        }catch(err){
+          var csv_data = data.toString();
+          res.set("Content-Type", "text/csv; charset=UTF-8");
+          res.send(csv_data);
+        }
 
-        var csv_data = data.toString();
-        res.set("Content-Type", "text/csv; charset=UTF-8");
-        res.send(csv_data);
+        
     });
     pythonProcess.stderr.on('data', (data) => {
       console.error("Error: ", data.toString());

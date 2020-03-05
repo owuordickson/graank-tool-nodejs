@@ -43,9 +43,6 @@ function runPythonCode(request){
             }
             //closeProgress()
         }catch(err){
-            //window.location.replace('/x/download')
-            //console.log(x.response);
-            
             var blob = new Blob([x.response], {type: 'text/csv'});
             console.log(blob);
             let a = document.createElement("a");
