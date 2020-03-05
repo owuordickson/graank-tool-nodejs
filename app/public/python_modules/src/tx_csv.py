@@ -337,8 +337,8 @@ class FuzzTX:
 
     @staticmethod
     def write_csv(csv_data, name='x_data'):
-        now = datetime.now()
-        stamp = int(datetime.timestamp(now))
+        # now = datetime.now()
+        # stamp = int(datetime.timestamp(now))
         #path = name + str(stamp) + str('.csv')
         output = StringIO()
         #with open(path, 'w') as f:

@@ -3,7 +3,7 @@ var router = express.Router();
 var spawn = require('child_process').spawn
 var path = require('path');
 
-//var fs = require("fs"); 
+var fs = require("fs"); 
 //var csv = require('csv');
 const csvJson = require('csvtojson')
 const { convertArrayToCSV } = require('convert-array-to-csv');
@@ -64,9 +64,17 @@ router.post('/runPython', function(req, res){
           separator: '\t'
         });*/
         csv_data = data.toString();
+        //res.setHeader('Content-Disposition', 'attachment; filename=x_data.csv');
+        /*res.attachment('x_data.csv');
         res.set("Content-Type", "text/csv; charset=UTF-8");
-        res.setHeader('Content-Disposition', 'attachment; filename=x_data.csv');
-        res.send(csv_data);
+        res.send(csv_data);*/
+
+        res.writeHead(200, {
+          'Content-Type': 'text/csv',
+          'Content-Disposition': 'attachment; filename=x_data.csv'
+        });
+        
+        res.end(csv_data);
     });
     pythonProcess.stderr.on('data', (data) => {
       console.error("Error: ", data.toString());
