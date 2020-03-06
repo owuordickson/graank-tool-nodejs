@@ -24,7 +24,7 @@ docker run -d graank:nodejs
 ``` shell
 docker pull owuordickson/graank:nodejs-tool
 
-docker run -d owuordickson/graank:nodejs-tool
+docker run -d -p 80:80 owuordickson/graank:nodejs-tool
 
 ```
 
