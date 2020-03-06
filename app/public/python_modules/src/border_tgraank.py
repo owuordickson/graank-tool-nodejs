@@ -24,7 +24,7 @@ import skfuzzy as fuzzy
 from dateutil.parser import parse
 import time
 import itertools as it
-from collections import Iterable
+from collections.abc import Iterable
 
 
 # --------------------------- Data Transform -----------------------

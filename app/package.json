@@ -23,7 +23,6 @@
   "dependencies": {
     "blob": "^0.1.0",
     "child_process": "^1.0.2",
-    "convert-array-to-csv": "^1.0.10",
     "cookie-parser": "~1.4.4",
     "csvtojson": "^2.0.10",
     "debug": "~2.6.9",

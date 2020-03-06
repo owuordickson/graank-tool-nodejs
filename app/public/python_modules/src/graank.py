@@ -13,7 +13,7 @@ import gc
 import sys
 import ntpath
 import itertools as it
-from collections import Iterable
+from collections.abc import Iterable
 
 
 
