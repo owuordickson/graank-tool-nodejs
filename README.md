@@ -34,8 +34,6 @@ docker run -d -p 80:80 owuordickson/graank:nodejs-tool
 
 cd app && npm install
 
-sudo apt-get install -y python3-pip python3
-
 sudo pip3 install scikit-fuzzy python-dateutil
 
 npm start
