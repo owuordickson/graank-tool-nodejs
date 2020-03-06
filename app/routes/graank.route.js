@@ -15,7 +15,7 @@ router.post('/runPython', function(req, res){
     var py_req = req.body.data
     var py_path = python_path = path.join(__dirname, py_req[0])
     py_req[0] = py_path
-    const pythonProcess = spawn('python', req.body.data);
+    const pythonProcess = spawn('python3', req.body.data);
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
         console.log("finished working");

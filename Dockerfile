@@ -4,8 +4,8 @@ RUN mkdir /py_dependencies
 WORKDIR /py_dependencies
 COPY python_requirements.txt /py_dependencies/requirements.txt
 RUN apt-get update
-RUN apt-get install -y python-pip
-RUN pip install -r requirements.txt
+RUN apt-get install -y python3-pip python3.6
+RUN pip3 install -r requirements.txt
 
 RUN mkdir /opt/app
 WORKDIR /opt/app
