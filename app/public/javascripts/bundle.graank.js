@@ -75,16 +75,6 @@ selectDirBtn.addEventListener('click', (event) => {
     })
 })
 
-/*ipcRenderer.on('selected-directory', (event, path) => {
-  selectDirBtn.value = `${path}`
-  if (!gradualEP){
-    msgLabel.innerHTML = ''
-    closeResultContent()
-    closeProgress()
-    closeSpecifications()
-  }
-})*/
-
 
 //----------------------------------------------------------------------------
 
@@ -131,9 +121,9 @@ runPattern2.addEventListener('click', (event) => {
     type = 2
   }
   showProgress()
-  //python_path = path.join(__dirname, '../python_modules/src/border_tgraank.py')
-  python_path = '../public/python_modules/src/border_tgraank.py'
-  python_file = 'border_tgraank.py'
+  //python_path = path.join(__dirname, '../python_modules/src/ant_colony.py')
+  python_path = '../public/python_modules/src/ant_colony.py'
+  python_file = 'ant_colony.py'
   req = [python_path, type, csv_data, (ref_col-1), min_sup, min_rep]
   //console.log(req)
   runPythonCode(req)
@@ -163,9 +153,9 @@ runPattern1.addEventListener('click', (event) => {
             msg = 'columns in csv file not matching previous file...<br>upload another file'
             requestFile(msg)
           }else {
-            //python_path = path.join(__dirname, '../python_modules/src/graank.py')
-            python_path = '../public/python_modules/src/graank.py'
-            python_file = 'graank.py'
+            //python_path = path.join(__dirname, '../python_modules/src/ant_colony.py')
+            python_path = '../public/python_modules/src/ant_colony.py'
+            python_file = 'ant_colony.py'
             req = [python_path, type, csv_data1, csv_data2, min_sup]
             runPythonCode(req)
             csv_data1 = ''
@@ -197,9 +187,9 @@ runPattern1.addEventListener('click', (event) => {
   }else{
     type = 1
     showProgress()
-    //python_path = path.join(__dirname, '../python_modules/src/graank.py')
-    python_path = '../public/python_modules/src/graank.py'
-    python_file = 'graank.py'
+    //python_path = path.join(__dirname, '../python_modules/src/ant_colony.py')
+    python_path = '../public/python_modules/src/ant_colony.py'
+    python_file = 'ant_colony.py'
     req = [python_path, type, csv_data, min_sup]
     runPythonCode(req)
   }
