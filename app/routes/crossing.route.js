@@ -10,6 +10,8 @@ var csvPaths = [];
 
 /* GET crossing csv files */
 router.get('/', function(req, res, next) {
+  csvFiles = [];
+  csvPaths = [];
   res.render('crossing', { title: 'fuzztx' });
 });
 
@@ -51,34 +53,52 @@ router.post('/runPython', function(req, res){
     py_req = {data: [py_path, json_str]};
     //console.log(py_req);
     const pythonProcess = spawn('python3', py_req.data);//req.body.data);
-    pythonProcess.stdout.on('data', (data) => {
-        // Do something with the data returned from python script
-        console.log("finished working");
-        
-        try{
-          var response = JSON.stringify(data.toString());
-          res.set("Content-Type", "application/json; charset=UTF-8");
-          res.send(response);
-        }catch(err){
-          var csv_data = data.toString();
-          res.set("Content-Type", "text/csv; charset=UTF-8");
-          res.send(csv_data);
-        }
+    pythonProcess.stdout.on('data', async(data) => {
+      try{
+          // Do something with the data returned from python script
+          console.log("finished working");
 
-        
+          var ok = 0;
+          try{
+            test_data = JSON.stringify(data.toString());
+            ok = 1;
+          }catch(err){
+            ok = 0;
+          }
+
+          if (ok == 0){
+            var response = JSON.stringify({success: 0, pyload: "unable to cross data"});
+            res.set("Content-Type", "application/json; charset=UTF-8");
+            res.send(response);
+          }else if(ok == 1){
+            var response = data.toString();
+            res.set("Content-Type", "text/csv; charset=UTF-8");
+            res.send(response);
+          }
+      }catch(err){
+        console.log(err);
+      }
     });
-    pythonProcess.stderr.on('data', (data) => {
-      console.error("Error: ", data.toString());
-      var response = JSON.stringify({success: 0, pyload: data.toString()});
-      //res.set("Content-Type", "application/json; charset=UTF-8");
-      res.send(response);
+    pythonProcess.stderr.on('data', async(data) => {
+      try{
+        console.error("Error: ", data.toString());
+        var response = JSON.stringify({success: 0, pyload: data.toString()});
+        res.set("Content-Type", "application/json; charset=UTF-8");
+        res.send(response);
+      }catch(err){
+        console.log(err);
+      }
     })
-    pythonProcess.on('close', (code) => {
-      console.log("Child exited with code ", code);
+    pythonProcess.on('close', async(code) => {
+      try{
+        console.log("Child exited with code ", code);
+      }catch(err){
+        console.log(err);
+      }
     })
   }else{
     console.error("Error: Upload at least 2 different csv files");
-    //res.set("Content-Type", "application/json; charset=UTF-8");
+    res.set("Content-Type", "application/json; charset=UTF-8");
     var response = JSON.stringify({success: 0, pyload: "Upload at least 2 DIFFERENT csv files"});
     res.send(response);
   }

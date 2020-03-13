@@ -317,11 +317,6 @@ class FuzzTX:
 
     @staticmethod
     def test_paths(path_str):
-        # path_list = [x.strip() for x in path_str.split(',')]
-        #for path in path_list:
-        #    if path == '':
-        #        path_list.remove(path)
-        #return path_list
         file_list = []
         raw_data = json.loads(path_str)
         for item in raw_data:
@@ -336,16 +331,13 @@ class FuzzTX:
         return file_list
 
     @staticmethod
-    def write_csv(csv_data, name='x_data'):
-        # now = datetime.now()
-        # stamp = int(datetime.timestamp(now))
-        #path = name + str(stamp) + str('.csv')
+    def write_csv(raw_data, name='x_data'):
         output = StringIO()
-        #with open(path, 'w') as f:
         writer = csv.writer(output)
-        writer.writerows(csv_data)
-        return output.getvalue()
-        #f.close()
+        writer.writerows(raw_data)
+        csv_data = output.getvalue()
+        output.close()
+        return csv_data
 
     @staticmethod
     def write_file(data, path):
@@ -365,10 +357,9 @@ def init_algorithm(allow_char, f_files, cores, allow_para):
         x_file = FuzzTX.write_csv(x_data)
         print(x_file)
         sys.stdout.flush()
-        # return wr_line
     except Exception as error:
         wr_line = "Failed " + str(error)
-        json_str = json.dumps({"success": 0, "pyload": wr_line});
+        json_str = json.dumps({"success": 0, "pyload": wr_line})
         print(json_str)
         sys.stdout.flush()
         # return wr_line

@@ -33,16 +33,13 @@ function runPythonCode(request){
             console.log(msg);
     
             if (msg.success == 1){
-                //document.getElementById('text-result').innerHTML = `${msg.pyload}`
-                //showResultContent()
                 console.log(msg.pyload)
             }else if (msg.success == 0){
-                //msgLabel.innerHTML = '<p>Sorry, an error occured. Check console for more details</p>'
                 console.log(msg.pyload)
                 alert(msg.pyload)
             }
-            //closeProgress()
         }catch(err){
+            //console.log(err);
             var blob = new Blob([x.response], {type: 'text/csv'});
             console.log(blob);
             let a = document.createElement("a");
