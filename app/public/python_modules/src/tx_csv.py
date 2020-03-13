@@ -350,7 +350,7 @@ class FuzzTX:
 
 #------ main program -----------------------------------
 
-def init_algorithm(allow_char, f_files, cores, allow_para):
+def init_txcsv(allow_char, f_files, cores, allow_para):
     try:
         obj = FuzzTX(f_files, allow_char, cores, allow_para)
         x_data = obj.cross_data()
@@ -366,4 +366,4 @@ def init_algorithm(allow_char, f_files, cores, allow_para):
 
 
 req_files = sys.argv[1]
-init_algorithm(1, req_files, 2, 0)
+init_txcsv(1, req_files, 2, 0)
