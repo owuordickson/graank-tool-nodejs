@@ -16,6 +16,7 @@ import numpy as np
 import random as rand
 
 import csv
+import json
 from dateutil.parser import parse
 import time
 
@@ -382,6 +383,38 @@ class HandleData:
         except ValueError:
             return False
 
+    @staticmethod  # added
+    def test_dataset(json_string):
+        # NB: test the dataset attributes: time|item_1|item_2|...|item_n
+        # return true and (list) dataset if it is ok
+        # 1. retrieve dataset from file
+        data = json.loads(json_string)
+        raw_titles = list(data[0].keys())
+        temp = list()
+        var_temp = list()
+        for t in raw_titles:
+            var_temp.append(str(t))
+        temp.append(var_temp)
+        for item in data:
+            var_temp = list()
+            for key, value in item.items():
+                var_temp.append(str(value))
+            temp.append(var_temp)
+        # 2. Retrieve time and their columns
+        time_cols = list()
+        for i in range(len(temp[1])):  # check every column for time format
+            row_data = str(temp[1][i])
+            try:
+                time_ok, t_stamp = HandleData.test_time(row_data)
+                if time_ok:
+                    time_cols.append(i)
+            except ValueError:
+                continue
+        if time_cols:
+            return time_cols, temp
+        else:
+            return False, temp
+
 
 #-------------------------------------------------------
 
@@ -652,8 +685,8 @@ class TgradACO:
             # implement parallel multi-processing
             if self.cores > 1:
                 num_cores = self.cores
-            else:
-                num_cores = InitParallel.get_num_cores()
+            # else:
+            #    num_cores = InitParallel.get_num_cores()
             print("No. of cpu cores found: " + str(num_cores))
             print("No. of parallel tasks: " + str(self.max_step))
             self.cores = num_cores
@@ -791,7 +824,7 @@ class TgradACO:
 #---------- main programs -------------------------------
 
 
-def init_acograd(f_path, min_supp, cores, eq=False):
+def init_acograd(f_path, min_supp, cores=1, eq=False):
     try:
         wr_line = ""
         d_set = HandleData(f_path)
@@ -801,10 +834,10 @@ def init_acograd(f_path, min_supp, cores, eq=False):
             ac = GradACO(d_set)
             list_gp = ac.run_ant_colony(min_supp)
 
-            if cores > 1:
-                num_cores = cores
-            else:
-                num_cores = InitParallel.get_num_cores()
+            # if cores > 1:
+            #    num_cores = cores
+            # else:
+            #    num_cores = InitParallel.get_num_cores()
 
             wr_line = "Algorithm: ACO-GRAANK \n"
             wr_line += "No. of (dataset) attributes: " + str(d_set.column_size) + '\n'
@@ -831,7 +864,7 @@ def init_acograd(f_path, min_supp, cores, eq=False):
         return wr_line
 
 
-def init_acotgrad(f_path, refItem, minSup, minRep, allowPara, eq=False):
+def init_acotgrad(f_path, refItem, minSup, minRep, allowPara=0, eq=False):
     try:
         wr_line = ""
         d_set = HandleData(f_path)
@@ -882,46 +915,35 @@ def init_acotgrad(f_path, refItem, minSup, minRep, allowPara, eq=False):
 
 request = int(sys.argv[1])
 
-# graank.py
 if request == 1:
     # gradual patterns
     file_data = sys.argv[2]
     min_sup = float(sys.argv[3])
-    algorithm_gradual(file_data, min_sup)
-elif request == 11:
-    # emerging gradual Patterns
-    file_data1 = str(sys.argv[2])
-    file_data2 = str(sys.argv[3])
-    min_sup = float(sys.argv[4])
-    algorithm_ep_gradual(file_data1, file_data2, min_sup)
-else:
-    print("<h5>Request not found!</h5>")
-    sys.stdout.flush()
-
-# bordertgraank.py
-if request == 2:
+    init_acograd(file_data, min_sup)
+elif request == 2:
     # fuzzy-temporal patterns
     file_name = str(sys.argv[2])
     ref_col = int(sys.argv[3])
     min_sup = float(sys.argv[4])
     min_rep = float(sys.argv[5])
-    algorithm_fuzzy(file_name, ref_col, min_sup, min_rep)
-#elif request == 11:
+    init_acotgrad(file_name, ref_col, min_sup, min_rep)
+elif request == 11:
     # emerging gradual Patterns
-#    file_name = str(sys.argv[2])
-#    min_sup = float(sys.argv[3])
-#    algorithm_ep_gradual(file_name, min_sup)
+    file_data1 = str(sys.argv[2])
+    file_data2 = str(sys.argv[3])
+    min_sup = float(sys.argv[4])
+    # algorithm_ep_gradual(file_data1, file_data2, min_sup)
 elif request == 12:
     # emerging fuzzy-temporal Patterns
     file_name = str(sys.argv[2])
     ref_col = int(sys.argv[3])
     min_sup = float(sys.argv[4])
     min_rep = float(sys.argv[5])
-    algorithm_ep_fuzzy(file_name, ref_col, min_sup, min_rep)
+    # algorithm_ep_fuzzy(file_name, ref_col, min_sup, min_rep)
 elif request == 21:
     # check data-set for time
     file_name = str(sys.argv[2])
-    cols, data = DataTransform.test_dataset(file_name)
+    cols, data = HandleData.test_dataset(file_name)
     if cols:
         print("true")
     else:
