@@ -879,3 +879,54 @@ def init_acotgrad(f_path, refItem, minSup, minRep, allowPara, eq=False):
         print(error)
         return wr_line
 
+
+request = int(sys.argv[1])
+
+# graank.py
+if request == 1:
+    # gradual patterns
+    file_data = sys.argv[2]
+    min_sup = float(sys.argv[3])
+    algorithm_gradual(file_data, min_sup)
+elif request == 11:
+    # emerging gradual Patterns
+    file_data1 = str(sys.argv[2])
+    file_data2 = str(sys.argv[3])
+    min_sup = float(sys.argv[4])
+    algorithm_ep_gradual(file_data1, file_data2, min_sup)
+else:
+    print("<h5>Request not found!</h5>")
+    sys.stdout.flush()
+
+# bordertgraank.py
+if request == 2:
+    # fuzzy-temporal patterns
+    file_name = str(sys.argv[2])
+    ref_col = int(sys.argv[3])
+    min_sup = float(sys.argv[4])
+    min_rep = float(sys.argv[5])
+    algorithm_fuzzy(file_name, ref_col, min_sup, min_rep)
+#elif request == 11:
+    # emerging gradual Patterns
+#    file_name = str(sys.argv[2])
+#    min_sup = float(sys.argv[3])
+#    algorithm_ep_gradual(file_name, min_sup)
+elif request == 12:
+    # emerging fuzzy-temporal Patterns
+    file_name = str(sys.argv[2])
+    ref_col = int(sys.argv[3])
+    min_sup = float(sys.argv[4])
+    min_rep = float(sys.argv[5])
+    algorithm_ep_fuzzy(file_name, ref_col, min_sup, min_rep)
+elif request == 21:
+    # check data-set for time
+    file_name = str(sys.argv[2])
+    cols, data = DataTransform.test_dataset(file_name)
+    if cols:
+        print("true")
+    else:
+        print("false")
+    sys.stdout.flush()
+else:
+    print("<h5>Request not found!</h5>")
+    sys.stdout.flush()
