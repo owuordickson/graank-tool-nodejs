@@ -202,14 +202,15 @@ class FuzzyMF:
 
 class HandleData:
 
-    def __init__(self, file_path):
-        self.raw_data = HandleData.read_csv(file_path)
+    def __init__(self, json_str):
+        # self.raw_data = HandleData.read_csv(file_path)
+        cols, self.raw_data = HandleData.test_dataset(json_str)
         if len(self.raw_data) == 0:
             self.data = False
-            print("csv file read error")
+            # print("csv file read error")
             raise Exception("Unable to read csv file")
         else:
-            print("Data fetched from csv file")
+            # print("Data fetched from csv file")
             self.data = self.raw_data
             self.title = self.get_title()
             self.attr_index = self.get_attributes()
@@ -414,6 +415,18 @@ class HandleData:
             return time_cols, temp
         else:
             return False, temp
+
+    @staticmethod
+    def format_gp(obj_gp):
+        arr_gp = list(obj_gp)
+        new_gp = list()
+        for item in arr_gp:
+            attr = int(item[0])
+            sign = item[1]
+            str_gp = str(attr) + sign
+            new_gp.append(str_gp)
+        return set(new_gp)
+
 
 
 #-------------------------------------------------------
@@ -655,6 +668,7 @@ class GradACO:
             return -1, gen_p
 
 
+
 #-------------------------------------------------------
 
 
@@ -665,7 +679,7 @@ class TgradACO:
         self.d_set = d_set
         cols = d_set.get_time_cols()
         if len(cols) > 0:
-            print("Dataset Ok")
+            # print("Dataset Ok")
             self.time_ok = True
             self.time_cols = cols
             self.min_sup = min_sup
@@ -675,7 +689,7 @@ class TgradACO:
             self.cores = cores
             # self.multi_data = self.split_dataset()
         else:
-            print("Dataset Error")
+            # print("Dataset Error")
             self.time_ok = False
             self.time_cols = []
             raise Exception('No date-time data found')
@@ -687,14 +701,14 @@ class TgradACO:
                 num_cores = self.cores
             # else:
             #    num_cores = InitParallel.get_num_cores()
-            print("No. of cpu cores found: " + str(num_cores))
-            print("No. of parallel tasks: " + str(self.max_step))
+            # print("No. of cpu cores found: " + str(num_cores))
+            # print("No. of parallel tasks: " + str(self.max_step))
             self.cores = num_cores
             steps = range(self.max_step)
             pool = mp.Pool(num_cores)
             patterns = pool.map(self.fetch_patterns, steps)
             # patterns = Parallel(n_jobs=num_cores)(delayed(self.fetch_patterns)(s+1) for s in steps)
-            print("Finished extracting patterns")
+            # print("Finished extracting patterns")
             return patterns
         else:
             patterns = list()
@@ -716,7 +730,6 @@ class TgradACO:
             self.d_set.attr_data = data
             self.d_set.lst_bin = []
             # d_set = HandleData("", attr_data=[self.d_set.column_size, data])
-
             # 3. Execute aco-graank for each transformation
             ac = GradACO(self.d_set)
             list_gp = ac.run_ant_colony(self.min_sup, time_diffs)
@@ -824,93 +837,74 @@ class TgradACO:
 #---------- main programs -------------------------------
 
 
-def init_acograd(f_path, min_supp, cores=1, eq=False):
+def init_acograd(json_str, min_supp, cores=1, eq=False):
     try:
-        wr_line = ""
-        d_set = HandleData(f_path)
+        d_set = HandleData(json_str)
         if d_set.data:
             titles = d_set.title
             d_set.init_attributes(eq)
             ac = GradACO(d_set)
             list_gp = ac.run_ant_colony(min_supp)
 
-            # if cores > 1:
-            #    num_cores = cores
-            # else:
-            #    num_cores = InitParallel.get_num_cores()
-
-            wr_line = "Algorithm: ACO-GRAANK \n"
-            wr_line += "No. of (dataset) attributes: " + str(d_set.column_size) + '\n'
-            wr_line += "No. of (dataset) tuples: " + str(d_set.size) + '\n'
-            wr_line += "Minimum support: " + str(min_supp) + '\n'
-            wr_line += "Number of cores: " + str(num_cores) + '\n\n'
-
             for txt in titles:
-                wr_line += (str(txt[0]) + '. ' + str(txt[1]) + '\n')
-
-            wr_line += str("\nFile: " + f_path + '\n')
-            wr_line += str("\nPattern : Support" + '\n')
-
+                print(str(txt[0]) + '. ' + str(txt[1]) + '<br>')
+                # print(str(line) + "<br>")
+            print('<h5>Pattern : Support</h5>')
+            
+            list_gp.sort(key=lambda k: k[0], reverse=True)
             for gp in list_gp:
-                wr_line += (str(gp[1]) + ' : ' + str(gp[0]) + '\n')
-
-            wr_line += "\nPheromone Matrix\n"
-            wr_line += str(ac.p_matrix)
-            # ac.plot_pheromone_matrix()
-        return wr_line
+                supp = "%.3f" % gp[0]
+                print(str(HandleData.format_gp(gp[1])) + ' : ' + str(supp) + '<br>')
+                # print(str(tuple(D1[i])) + ' : ' + str(supp) + "<br>")
+            sys.stdout.flush()
+        else:
+            print("<h5>Oops! no gradual patterns found</h5>")
+            sys.stdout.flush()
     except Exception as error:
-        wr_line = "Failed: " + str(error)
-        print(error)
-        return wr_line
+        msg = "<h5>Failed: " + str(error) + "</h5>"
+        print(msg)
+        sys.stdout.flush()
 
-
-def init_acotgrad(f_path, refItem, minSup, minRep, allowPara=0, eq=False):
+def init_acotgrad(json_str, refItem, minSup, minRep, allowPara=0, eq=False):
     try:
-        wr_line = ""
-        d_set = HandleData(f_path)
+        d_set = HandleData(json_str)
         if d_set.data:
             titles = d_set.title
             d_set.init_attributes(eq)
             tgp = TgradACO(d_set, refItem, minSup, minRep, allowPara)
+
             if allowPara >= 1:
                 msg_para = "True"
                 list_tgp = tgp.run_tgraank(parallel=True)
             else:
                 msg_para = "False"
                 list_tgp = tgp.run_tgraank()
+                
             list_tgp = list(filter(bool, list_tgp))
-            if len(list_tgp) > 5:
-                list_tgp.sort(key=lambda k: (k[0][0], k[0][1]), reverse=True)
+            # if len(list_tgp) > 10:
+            list_tgp.sort(key=lambda k: (k[0][0], k[0][1]), reverse=True)
 
-            wr_line = "Algorithm: ACO-TGRAANK \n"
-            wr_line += "No. of (dataset) attributes: " + str(d_set.column_size) + '\n'
-            wr_line += "No. of (dataset) tuples: " + str(d_set.size) + '\n'
-            wr_line += "Minimum support: " + str(minSup) + '\n'
-            wr_line += "Minimum representativity: " + str(minRep) + '\n'
-            wr_line += "Multi-core execution: " + str(msg_para) + '\n'
-            wr_line += "Number of cores: " + str(tgp.cores) + '\n'
-            wr_line += "Number of tasks: " + str(tgp.max_step) + '\n\n'
             for txt in titles:
                 col = (int(txt[0]) - 1)
                 if col == refItem:
-                    wr_line += (str(txt[0]) + '. ' + str(txt[1]) + '**' + '\n')
+                    print(str(col) + '. ' + str(txt[1]) + '**' + '<br>')
                 else:
-                    wr_line += (str(txt[0]) + '. ' + str(txt[1]) + '\n')
-
-            wr_line += str("\nFile: " + f_path + '\n')
-            wr_line += str("\nPattern : Support" + '\n')
+                    print(str(col) + '. ' + str(txt[1]) + '<br>')
+            print('<h5>Pattern : Support</h5>')
 
             for obj in list_tgp:
                 if obj:
                     tgp = obj[0]
-                    wr_line += (str(tgp[1][0]) + ' : ' + str(tgp[0]) + ' | ' + str(tgp[1][1]) + '\n')
-        #    print("\nPheromone Matrix")
-        #    print(ac.p_matrix)
-        return wr_line
+                    supp = "%.3f" % tgp[0]
+                    print(str(HandleData.format_gp(tgp[1][0])) + ' : ' + str(supp) + ' | ' + str(tgp[1][1]) + '<br>')
+            sys.stdout.flush()
+        else:
+            print("<h5>Oops! no gradual patterns found</h5>")
+            sys.stdout.flush()
     except Exception as error:
-        wr_line = "Failed: " + str(error)
-        print(error)
-        return wr_line
+        msg = "<h5>Failed: " + str(error) + "</h5>"
+        print(msg)
+        sys.stdout.flush()
 
 
 request = int(sys.argv[1])

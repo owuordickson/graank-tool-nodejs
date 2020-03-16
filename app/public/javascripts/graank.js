@@ -111,7 +111,7 @@ runPattern2.addEventListener('click', (event) => {
   //python_path = path.join(__dirname, '../python_modules/src/ant_colony.py')
   python_path = '../public/python_modules/src/ant_colony.py'
   python_file = 'ant_colony.py'
-  req = [python_path, type, csv_data, (ref_col-1), min_sup, min_rep]
+  req = [python_path, type, csv_data, (ref_col), min_sup, min_rep]
   //console.log(req)
   runPythonCode(req)
 })
