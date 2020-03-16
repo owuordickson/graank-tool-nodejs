@@ -506,9 +506,11 @@ class GradACO:
         # print("Losers: "+str(len(loss_sols)))
         # print(count)
         if time_diffs is None:
-            return win_sols
+            return GradACO.remove_subsets(win_sols)
+            # return win_sols
         else:
-            return win_lag_sols
+            return GradACO.remove_subsets(win_lag_sols, True)
+            # return win_lag_sols
 
     def generate_rand_pattern(self):
         p = self.p_matrix
@@ -666,6 +668,41 @@ class GradACO:
                     return -1, pattern
         else:
             return -1, gen_p
+
+    @staticmethod
+    def remove_subsets(all_sols, temporal=False):
+        new_sols = list()
+        if not temporal:
+            for item in all_sols:
+                sol = set(item[1])
+                is_sub = GradACO.check_subset(sol, all_sols)
+                # print(is_sub)
+                if not is_sub:
+                    new_sols.append(item)
+        else:
+            for item in all_sols:
+                sol = set(item[1][0])
+                is_sub = GradACO.check_subset(sol, all_sols, temporal)
+                # print(is_sub)
+                if not is_sub:
+                    new_sols.append(item)
+        # print(new_sols)
+        return new_sols
+
+    @staticmethod
+    def check_subset(item, items, extra=False):
+        if not extra:
+            for obj in items:
+                if (item != set(obj[1])) and item.issubset(set(obj[1])):
+                    return True
+            return False
+        else:
+            for obj in items:
+                if (item != set(obj[1][0])) and item.issubset(set(obj[1][0])):
+                    return True
+            return False
+
+
 
 
 
@@ -894,9 +931,10 @@ def init_acotgrad(json_str, refItem, minSup, minRep, allowPara=0, eq=False):
 
             for obj in list_tgp:
                 if obj:
-                    tgp = obj[0]
-                    supp = "%.3f" % tgp[0]
-                    print(str(HandleData.format_gp(tgp[1][0])) + ' : ' + str(supp) + ' | ' + str(tgp[1][1]) + '<br>')
+                    #tgp = obj[0]
+                    for tgp in obj:
+                        supp = "%.3f" % tgp[0]
+                        print(str(HandleData.format_gp(tgp[1][0])) + ' : ' + str(supp) + ' | ' + str(tgp[1][1]) + '<br>')
             sys.stdout.flush()
         else:
             print("<h5>Oops! no gradual patterns found</h5>")
